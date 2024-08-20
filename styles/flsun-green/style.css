@@ -1,0 +1,302 @@
+@define-color color1 #41d500;
+@define-color color2 #41d500;
+@define-color color3 #41d500;
+@define-color color4 #41d500;
+@define-color bg #13181C;
+@define-color bg-trans0 rgba(0,0,0,0);
+@define-color bg-trans1 rgba(0,0,0,0.1);
+@define-color bg-trans7 rgba(0,0,0,0.7);
+@define-color bg-trans25 rgba(0,0,0,0.25);
+@define-color bg-slider #404E57;
+@define-color active #41d500;
+@define-color echo #007D70;
+@define-color error #981E1F;
+@define-color warning #F9A825;
+@define-color warning-text #434343;
+@define-color dialog-error #e31010;
+@define-color dialog-warning #e39210;
+@define-color dialog-secondary #999999;
+@define-color dialog-info #37e310;
+@define-color text white;
+@define-color text-inv black;
+@define-color lines #cccccc;
+
+* {
+    color: @text;
+}
+
+window {
+    background-color: @bg;
+    background-image: url("./styles/background.png");
+}
+
+combobox arrow {
+    background-color: @bg-trans0;
+}
+
+junction,
+list row,
+treeview.view {
+    background-color: @bg;
+}
+
+button {
+    background-color: @bg-trans0;
+}
+
+button:active,
+.button_active,
+button.active {
+    background-color: @active;
+    border-radius: 0.1em;
+}
+
+button.color1 {
+    background-color: @bg-trans25;
+    border-bottom-color: @color1;
+    border-radius: 0.3em;
+}
+
+button.color2 {
+    background-color: @bg-trans25;
+    border-bottom-color: @color2;
+    border-radius: 0.3em;
+}
+
+button.color3 {
+    background-color: @bg-trans25;
+    border-bottom-color: @color3;
+    border-radius: 0.3em;
+}
+
+button.color4 {
+    background-color: @bg-trans25;
+    border-bottom-color: @color4;
+    border-radius: 0.3em;
+}
+
+button.update {
+    background: @color3;
+    border: .1em solid @lines;
+}
+
+button.invalid {
+    background: @error;
+    border: .1em solid @lines;
+}
+
+button.color1:active {
+    background-color: @color1;
+    border-bottom-color: @color1;
+}
+
+button.color2:active {
+    background-color: @color2;
+    border-bottom-color: @color2;
+}
+ 
+button.color3:active {
+    background-color: @color3;
+    border-bottom-color: @color3;
+} 
+
+button.color4:active {
+    background-color: @color4;
+    border-bottom-color: @color4;
+}
+
+button.update:active,
+button.invalid:active {
+    background: @bg-trans25;
+    border: .1em solid @lines;
+}
+
+combobox box button {
+    border-color: @lines;
+}
+
+treeview.view check,
+switch {
+    background-color: @bg-slider;
+}
+
+treeview.view check:checked,
+switch:checked {
+    background-color: @active;
+}
+
+entry {
+    background-color: @bg-trans25;
+    border-color: @active;
+    margin-right: 5;
+}
+
+label {
+    color: @text;
+}
+
+menu {
+    background-color: @bg;
+    border-color: @lines;
+}
+
+menuitem {
+    background-color: @bg-trans25;
+    border-color: @lines;
+}
+
+trough {
+    background-color: @bg-slider;
+    color: @text;
+    border-color: @text-inv;
+}
+
+trough highlight,
+trough progress {
+    background-color: @active;
+    color: @text;
+    border-color: @text-inv;
+}
+
+scale-mark {
+    color: @text;
+}
+
+scrollbar,
+scrollbar button,
+scrollbar trough {
+    background-color: @bg-trans0;
+}
+
+scrollbar slider {
+    background-color: #404E57;
+}
+
+textview .time {
+    color: @lines;
+}
+
+popover {
+    background-color: @lines;
+}
+
+popover button {
+    background-color: @bg-trans7;
+    border-radius: 0.3em;
+    min-height: 4em;
+}
+
+.dialog {
+    border: 0;
+    padding: 0;
+    background-color: @bg;
+    background-image: url("./styles/z-bolt/background.png");
+    margin: 0;
+}
+
+.dialog button {
+    background-color: @bg-trans25;
+    border-radius: 0.3em;
+}
+
+.dialog button:active {
+    background-color: @active;
+    border-bottom-color: @active;
+    border-radius: 0.3em;
+}
+
+.horizontal_togglebuttons_active {
+    background-color: @active;
+}
+
+.horizontal_togglebuttons {
+    border-color: @lines;
+}
+
+.fan_slider {
+    color: @text;
+}
+
+.popup {
+    background-color: @text-inv;
+}
+
+.message_popup {
+    border-bottom-color: @text;
+}
+
+.numpad{
+    margin-right: 3;
+}
+
+.numpad_tleft,
+.numpad_top,
+.numpad_tright,
+.numpad_left,
+.numpad_button,
+.numpad_right,
+.numpad_bleft,
+.numpad_bottom,
+.numpad_bright {
+    border-color: @text;
+    background: @bg-trans25;
+}
+
+.numpad_key {
+    border-color: @lines;
+}
+
+.message {
+    border-color: @error;
+    color: @text;
+    background-color: @error;
+}
+
+.message button {
+    background-color: @text;
+    color: @text-inv;
+}
+
+.message_popup_echo {
+    background-color: @echo;
+}
+
+.message_popup_warning {
+    background-color: @warning;
+}
+
+.message_popup_warning label {
+    color: @warning-text;
+}
+
+.message_popup_error {
+    background-color: @error;
+}
+
+.keyboard_pad {
+    background-color: @bg-trans25;
+}
+
+.dialog-error {
+    border-bottom-color: @dialog-error;
+}
+
+.dialog-warning {
+    border-bottom-color: @dialog-warning;
+}
+
+.dialog-info {
+    border-bottom-color: @dialog-info;
+}
+
+.dialog-default {
+    border-bottom-color: @color3;
+}
+
+.dialog-secondary {
+    border-bottom-color: @dialog-secondary;
+}
+
+.dialog-primary {
+    border-bottom-color: @color1;
+}
