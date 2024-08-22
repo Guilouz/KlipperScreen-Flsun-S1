@@ -22,7 +22,7 @@ class Panel(ScreenPanel):
             valign=Gtk.Align.CENTER,
         )
 
-        self.labels["menu"] = self._gtk.Button("settings", _("Menu"), "color4")
+        self.labels["menu"] = self._gtk.Button("settings", _("Configurations"), "color4") # FLSUN Changes
         self.labels["menu"].connect("clicked", self._screen._go_to_submenu, "")
         self.labels["restart"] = self._gtk.Button(
             "refresh", _("Klipper Restart"), "color1"
