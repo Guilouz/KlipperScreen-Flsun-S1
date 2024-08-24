@@ -13,6 +13,12 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 3.4.4\n"
 
+msgid "Show Spool Weight in Percentage"
+msgstr ""
+
+msgid "Percentage instead of grams"
+msgstr ""
+
 msgid "Brightness"
 msgstr ""
 

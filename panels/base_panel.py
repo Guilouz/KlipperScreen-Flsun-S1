@@ -121,7 +121,20 @@ class BasePanel(ScreenPanel):
     def setup_dryingbox(self):
         img_size = self._gtk.img_scale * self.bts
         humidity_label = f"{self.spool_humidity if self.spool_humidity is not None else 0}%"
-        weight_label = f"{self.spool_weight if self.spool_weight is not None else 0}%"
+        if self._config.get_main_config().getboolean('spool_weight_percent', True):
+            weight_label = f"{self.spool_weight if self.spool_weight is not None else 0}%"
+        else:
+            if self.spool_weight is not None:
+                if self.spool_weight == 0:
+                    weight_label = "0g"
+                elif self.spool_weight in range(10, 101, 10):
+                    lower_bound = (self.spool_weight - 10) * 10
+                    upper_bound = self.spool_weight * 10
+                    weight_label = f"{lower_bound}g ~ {upper_bound}g" if self.spool_weight != 100 else "900g ~ 1Kg"
+                else:
+                    weight_label = "0g"
+            else:
+                weight_label = "0g"
         humidity_icon = self.get_icon("spool_humidity", img_size)
         weight_icon = self.get_icon("spool_weight", img_size)
         

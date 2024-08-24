@@ -161,8 +161,8 @@ class KlipperScreenConfig:
                 bools = (
                     'invert_x', 'invert_y', 'invert_z', '24htime', 'only_heaters', 'show_cursor', 'confirm_estop',
                     'autoclose_popups', 'use_dpms', 'use_default_menu', 'side_macro_shortcut', 'use-matchbox-keyboard',
-                    'show_heater_power', "show_scroll_steppers", "auto_open_extrude"
-                )
+                    'show_heater_power', "show_scroll_steppers", "auto_open_extrude", "spool_weight_percent"
+                ) # FLSUN Changes
                 strs = (
                     'default_printer', 'language', 'print_sort_dir', 'theme', 'screen_blanking_printing', 'font_size',
                     'print_estimate_method', 'screen_blanking', "screen_on_devices", "screen_off_devices", 'print_view',
@@ -302,10 +302,11 @@ class KlipperScreenConfig:
             {"only_heaters": {"section": "main", "name": _("Hide sensors in Temp."), "type": "binary",
                               "tooltip": _("Show only devices that are able to be set"),
                               "value": "False", "callback": screen.reload_panels}},
+            # Start FLSUN Changes
             {"use_dpms": {"section": "main", "name": _("Screen DPMS"), "type": "binary",
-                          "tooltip": _("Enable screen power management") + "\n"
-                                     + _("Not all screens support this"),
+                          "tooltip": _("Enable screen power management"),
                           "value": "True", "callback": screen.set_dpms}},
+            # End FLSUN Changes
             {"autoclose_popups": {"section": "main", "name": _("Auto-close notifications"), "type": "binary",
                                   "tooltip": _("Close messages after a timeout"),
                                   "value": "True"}},
@@ -317,6 +318,11 @@ class KlipperScreenConfig:
                                       "value": "False", "callback": screen.reload_panels}},
             {"auto_open_extrude": {"section": "main", "name": _("Auto-open Extrude On Pause"), "type": "binary",
                                    "value": "True", "callback": screen.reload_panels}},
+            # Start FLSUN Changes
+            {"spool_weight_percent": {"section": "main", "name": _("Show Spool Weight in Percentage"), "type": "binary",
+                                   "tooltip": _("Percentage instead of grams"),
+                                   "value": "False"}},
+            # End FLSUN Changes
             # {"": {"section": "main", "name": _(""), "type": ""}}
         ]
 
