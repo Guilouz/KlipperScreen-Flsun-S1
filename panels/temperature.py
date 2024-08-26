@@ -548,7 +548,10 @@ class Panel(ScreenPanel):
                     _("Initiate a PID calibration for:")
                     + f" {heater} @ {temp} ºC"
                     + "\n\n"
-                    + _("It may take more than 5 minutes depending on the heater power."), "printer.gcode.script", script)
+                    + _("It may take more than 5 minutes depending on the heater power."),
+                    "printer.gcode.script",
+                    script
+                )
             else:
                 script = {
                     "script": f"_PID_KS_START\nPID_CALIBRATE HEATER={self.active_heater} TARGET={temp}\n_PID_KS_END"
@@ -558,7 +561,10 @@ class Panel(ScreenPanel):
                     _("Initiate a PID calibration for:")
                     + f" {heater} @ {temp} ºC"
                     + "\n\n"
-                    + _("It may take more than 5 minutes depending on the heater power."), "printer.gcode.script", script)
+                    + _("It may take more than 5 minutes depending on the heater power."),
+                    "printer.gcode.script",
+                    script
+                )
             # End FLSUN Changes
 
     def create_left_panel(self):
