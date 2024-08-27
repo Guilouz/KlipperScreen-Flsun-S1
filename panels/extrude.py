@@ -276,6 +276,7 @@ class Panel(ScreenPanel):
         self.speed = speed
 
     def check_min_temp(self, widget, method, direction):
+        # Start FLSUN Changes
         #temp = float(self._printer.get_stat(self.current_extruder, 'temperature'))
         #target = float(self._printer.get_stat(self.current_extruder, 'target'))
         #min_extrude_temp = float(self._printer.config[self.current_extruder].get('min_extrude_temp', 170))
@@ -285,6 +286,7 @@ class Panel(ScreenPanel):
                     #widget, "printer.gcode.script",
                     #{"script": f"M109 S{target}"}
                 #)
+        # End FLSUN Changes
         if method == "extrude":
             self.extrude(widget, direction)
         elif method == "load_unload":
@@ -298,13 +300,13 @@ class Panel(ScreenPanel):
     def load_unload(self, widget, direction):
         if direction == "-":
             if not self.unload_filament:
-                self._screen.show_popup_message("Macro UNLOAD_FILAMENT not found")
+                self._screen.show_popup_message("Macro UNLOAD_FILAMENT" + _("not found!\nPlease update your configuration files.") # FLSUN Changes
             else:
                 self._screen._send_action(widget, "printer.gcode.script",
                                           {"script": f"UNLOAD_FILAMENT SPEED={self.speed * 60}"})
         if direction == "+":
             if not self.load_filament:
-                self._screen.show_popup_message("Macro LOAD_FILAMENT not found")
+                self._screen.show_popup_message("Macro LOAD_FILAMENT" + _("not found!\nPlease update your configuration files.") # FLSUN Changes
             else:
                 self._screen._send_action(widget, "printer.gcode.script",
                                           {"script": f"LOAD_FILAMENT SPEED={self.speed * 60}"})
