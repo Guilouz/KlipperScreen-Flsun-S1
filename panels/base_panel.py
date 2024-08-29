@@ -3,7 +3,6 @@ import logging
 
 import gi
 import json # FLSUN Changes
-import time # FLSUN Changes
 
 gi.require_version("Gtk", "3.0")
 from gi.repository import GLib, Gtk, Pango
@@ -17,9 +16,6 @@ DRYING_BOX_JSON_PATH = '/dev/shm/drying_box.json' # FLSUN Changes
 class BasePanel(ScreenPanel):
     def __init__(self, screen, title=None):
         super().__init__(screen, title)
-        self.file_not_found_attempts = 0 # FLSUN Changes
-        self.max_file_not_found_attempts = 5 # FLSUN Changes
-        self.file_not_found_interval = 60 # FLSUN Changes
         self.current_panel = None
         self.time_min = -1
         self.time_format = self._config.get_main_config().getboolean("24htime", True)
@@ -29,8 +25,7 @@ class BasePanel(ScreenPanel):
         self.current_extruder = None
         self.last_usage_report = datetime.now()
         self.usage_report = 0
-        self.spool_weight = None # FLSUN Changes
-        self.spool_humidity = None # FLSUN Changes
+        self.custom_sensors = ["spool_humidity", "spool_weight"] # FLSUN Changes
         # Action bar buttons
         abscale = self.bts * 1.1
         self.control['back'] = self._gtk.Button('back', scale=abscale)
@@ -91,7 +86,10 @@ class BasePanel(ScreenPanel):
 
         self.control['time'] = Gtk.Label(label="00:00 AM")
         self.control['time_box'] = Gtk.Box(halign=Gtk.Align.END)
-        self.control['time_box'].pack_end(self.control['time'], True, True, 5) # FLSUN Changes
+        # Start FLSUN Changes
+        #self.control['time_box'].pack_end(self.control['time'], True, True, 10)
+        self.control['time_box'].pack_end(self.control['time'], True, True, 5)
+        # End FLSUN Changes
 
         self.titlebar = Gtk.Box(spacing=5, valign=Gtk.Align.CENTER)
         self.titlebar.get_style_context().add_class("title_bar")
@@ -115,67 +113,8 @@ class BasePanel(ScreenPanel):
             self.main_grid.attach(self.content, 1, 1, 1, 1)
 
         self.update_time()
-        self.update_dryingbox() # FLSUN Changes
 
     # Start FLSUN Changes
-    def setup_dryingbox(self):
-        img_size = self._gtk.img_scale * self.bts
-        humidity_label = f"{self.spool_humidity if self.spool_humidity is not None else 0}%"
-        if self._config.get_main_config().getboolean('spool_weight_percent', True):
-            weight_label = f"{self.spool_weight if self.spool_weight is not None else 0}%"
-        else:
-            if self.spool_weight is not None:
-                if self.spool_weight == 0:
-                    weight_label = "0g"
-                elif self.spool_weight in range(10, 101, 10):
-                    lower_bound = (self.spool_weight - 10) * 10
-                    upper_bound = self.spool_weight * 10
-                    weight_label = f"{lower_bound}g ~ {upper_bound}g" if self.spool_weight != 100 else "900g ~ 1Kg"
-                else:
-                    weight_label = "0g"
-            else:
-                weight_label = "0g"
-        humidity_icon = self.get_icon("spool_humidity", img_size)
-        weight_icon = self.get_icon("spool_weight", img_size)
-        
-        humidity_box = Gtk.Box()
-        humidity_box.pack_start(humidity_icon, False, False, 3)
-        humidity_box.pack_start(Gtk.Label(label=humidity_label), False, False, 0)
-    
-        weight_box = Gtk.Box()
-        weight_box.pack_start(weight_icon, False, False, 3)
-        weight_box.pack_start(Gtk.Label(label=weight_label), False, False, 0)
-    
-        for child in self.control['temp_box'].get_children():
-            if 'weight_box' in child.get_name() or 'humidity_box' in child.get_name():
-                self.control['temp_box'].remove(child)
-    
-        humidity_box.set_name('humidity_box')
-        weight_box.set_name('weight_box')
-        self.control['temp_box'].pack_start(humidity_box, False, False, 0)
-        self.control['temp_box'].pack_start(weight_box, False, False, 0)
-    
-        self.control['temp_box'].show_all()
-            
-
-    def update_dryingbox(self):
-        now = time.time()
-        if self.file_not_found_attempts >= self.max_file_not_found_attempts:
-            if now - self.last_dryingbox_update > self.file_not_found_interval:
-                self.file_not_found_attempts = 0
-        else:
-            weight, humidity = self.get_dryingbox_data()
-            if weight is None and humidity is None:
-                self.file_not_found_attempts += 1
-                logging.error(f"JSON file not found.")
-                return True
-
-            self.spool_weight = weight if weight is not None else 0
-            self.spool_humidity = humidity if humidity is not None else 0
-            self.setup_dryingbox()
-            self.last_dryingbox_update = now
-        return True
-
     def get_dryingbox_data(self):
         try:
             with open(DRYING_BOX_JSON_PATH, 'r') as file:
@@ -212,6 +151,7 @@ class BasePanel(ScreenPanel):
             for child in self.control['temp_box'].get_children():
                 self.control['temp_box'].remove(child)
             devices = self._printer.get_temp_devices()
+            devices = devices + self.custom_sensors # FSLUN Changes
             if not show or not devices:
                 return
 
@@ -252,8 +192,13 @@ class BasePanel(ScreenPanel):
                         self.control['temp_box'].add(self.labels[f"{device}_box"])
                         n += 1
                         break
-
-            self.setup_dryingbox() # FLSUN Changes
+            # Start FLSUN Changes
+            for device in self.custom_sensors:
+                if n >= nlimit + 1:
+                    break
+                self.control['temp_box'].add(self.labels[f"{device}_box"])
+                n += 1
+            # End FLSUN Changes
             self.control['temp_box'].show_all()
         except Exception as e:
             logging.debug(f"Couldn't create heaters box: {e}")
@@ -266,9 +211,12 @@ class BasePanel(ScreenPanel):
                 return self._gtk.Image(f"extruder-{device[8:]}", img_size, img_size)
             return self._gtk.Image("extruder", img_size, img_size)
         elif device.startswith("heater_bed"):
-            return self._gtk.Image("bed-inner", img_size, img_size) # FSLUN Changes
-        elif device.startswith("heater_generic heater_bed_2"): # FSLUN Changes
-            return self._gtk.Image("bed-outer", img_size, img_size)  # FSLUN Changes
+        # Start FLSUN Changes
+            #return self._gtk.Image("bed", img_size, img_size)
+            return self._gtk.Image("bed-inner", img_size, img_size)
+        elif device.startswith("heater_generic heater_bed_2"):
+            return self._gtk.Image("bed-outer", img_size, img_size)
+        # End FLSUN Changes
         # Extra items
         elif self.titlebar_name_type is not None:
             # The item has a name, do not use an icon
@@ -278,9 +226,9 @@ class BasePanel(ScreenPanel):
         # Start FLSUN Changes
         elif device.startswith("heater_generic drying_box"):
             return self._gtk.Image("filament", img_size, img_size)
-        elif device == "spool_humidity":
+        elif "humidity" in device:
             return self._gtk.Image("humidity", img_size, img_size)
-        elif device == "spool_weight":
+        elif "weight" in device:
             return self._gtk.Image("weight", img_size, img_size)
         # End FLSUN Changes
         elif device.startswith("heater_generic"):
@@ -291,10 +239,6 @@ class BasePanel(ScreenPanel):
     def activate(self):
         if self.time_update is None:
             self.time_update = GLib.timeout_add_seconds(1, self.update_time)
-        # Start FLSUN Changes
-        if self.spool_weight is not None or self.spool_humidity is not None:
-            self.spool_weight = GLib.timeout_add_seconds(1, self.update_dryingbox)
-        # End FLSUN Changes
 
     def add_content(self, panel):
         printing = self._printer and self._printer.state in {"printing", "paused"}
@@ -307,7 +251,10 @@ class BasePanel(ScreenPanel):
         for control in ('back', 'home'):
             self.set_control_sensitive(len(self._screen._cur_panels) > 1, control=control)
         self.current_panel = panel
-        self.set_title("") # FLSUN Changes
+        # Start FLSUN Changes
+        #self.set_title(panel.title)
+        self.set_title("")
+        # End FLSUN Changes
         self.content.add(panel.content)
 
     def back(self, widget=None):
@@ -364,6 +311,29 @@ class BasePanel(ScreenPanel):
                             self._gtk.remove_dialog(dialog)
             return
 
+        # Start FLSUN Changes
+        elif action == "sensors:sensor_update":
+            logging.debug("Sensor updated: %s", data)
+
+        if "spool_humidity" and "spool_weight" in self.labels:
+            weight, humidity = self.get_dryingbox_data()
+            self.labels["spool_humidity"].set_label(f"{humidity if humidity is not None else 0}%")
+            if self._config.get_main_config().getboolean('spool_weight_percent', True):
+                weight_label = f"{weight if weight is not None else 0}%"
+            else:
+                if weight is not None:
+                    if weight == 0:
+                        weight_label = "0g"
+                    elif weight in range(10, 101, 10):
+                        lower_bound = (weight - 10) * 10
+                        upper_bound = weight * 10
+                        weight_label = f"{lower_bound}g ~ {upper_bound}g" if weight != 100 else "900g ~ 1Kg"
+                    else:
+                        weight_label = "0g"
+                else:
+                    weight_label = "0g"
+            self.labels["spool_weight"].set_label(weight_label)
+        # End FLSUN Changes
         if action != "notify_status_update" or self._screen.printer is None:
             return
         for device in self._printer.get_temp_devices():
@@ -377,7 +347,10 @@ class BasePanel(ScreenPanel):
                     elif self.titlebar_name_type == "short":
                         name = device.split()[1] if len(device.split()) > 1 else device
                         name = f"{name[:1].upper()}: "
-                self.labels[device].set_label(f"{name}{temp:.0f}°")
+                # Start FSLUN Changes
+                #self.labels[device].set_label(f"{name}{temp:.0f}°")
+                self.labels[device].set_label(f"{name}{temp:.0f}°C")
+                # End FLSUN Changes
 
         if (self.current_extruder and 'toolhead' in data and 'extruder' in data['toolhead']
                 and data["toolhead"]["extruder"] != self.current_extruder):
@@ -458,8 +431,10 @@ class BasePanel(ScreenPanel):
     def show_update_dialog(self):
         if self.update_dialog is not None:
             return
-        #button = [{"name": _("Finish"), "response": Gtk.ResponseType.OK}] # FLSUN Changes
-        button = [{"name": _("Close"), "response": Gtk.ResponseType.OK}] # FLSUN Changes
+        # Start FLSUN Changes
+        #button = [{"name": _("Finish"), "response": Gtk.ResponseType.OK}]
+        button = [{"name": _("Close"), "response": Gtk.ResponseType.OK}]
+        # End FLSUN Changes
         self.labels['update_progress'] = Gtk.Label(hexpand=True, vexpand=True, ellipsize=Pango.EllipsizeMode.END)
         self.labels['update_scroll'] = self._gtk.ScrolledWindow(steppers=False)
         self.labels['update_scroll'].set_property("overlay-scrolling", True)
