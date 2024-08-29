@@ -331,7 +331,7 @@ class KlipperScreenConfig:
             # Start FLSUN Changes
             {"spool_weight_percent": {"section": "main", "name": _("Show Spool Weight in Percentage"), "type": "binary",
                                    "tooltip": _("Percentage instead of grams"),
-                                   "value": "False"}},
+                                   "value": "False", "callback": screen.reload_panels}},
             # End FLSUN Changes
             # {"": {"section": "main", "name": _(""), "type": ""}}
         ]
