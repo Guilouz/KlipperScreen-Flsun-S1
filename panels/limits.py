@@ -17,6 +17,33 @@ class Panel(ScreenPanel):
         self.grid = Gtk.Grid()
 
         conf = self._printer.get_config_section("printer")
+        # Start FLSUN Changes
+        #self.options = [
+        #    {
+        #        "name": _("Max Acceleration"),
+        #        "option": "max_accel",
+        #        "units": _("mm/s²"),
+        #        "value": int(float(conf['max_accel']))
+        #    },
+        #    {
+        #        "name": _("Minimum Cruise Ratio"),
+        #        "option": "minimum_cruise_ratio",
+        #        "units": "%",
+        #        "value": int(float(conf['minimum_cruise_ratio']) * 100) if "minimum_cruise_ratio" in conf else 50,
+        #        "max": 99
+        #    },
+        #    {
+        #        "name": _("Max Velocity"),
+        #        "option": "max_velocity",
+        #        "units": _("mm/s"),
+        #        "value": int(float(conf["max_velocity"]))},
+        #    {
+        #        "name": _("Square Corner Velocity"),
+        #        "option": "square_corner_velocity",
+        #        "units": _("mm/s"),
+        #        "value": int(float(conf['square_corner_velocity'])) if "square_corner_velocity" in conf else 5
+        #    }
+        #]
         self.options = [
             {
                 "name": _("Max Acceleration"),
@@ -35,14 +62,10 @@ class Panel(ScreenPanel):
                 "name": _("Max Velocity"),
                 "option": "max_velocity",
                 "units": _("mm/s"),
-                "value": int(float(conf["max_velocity"]))},
-            {
-                "name": _("Square Corner Velocity"),
-                "option": "square_corner_velocity",
-                "units": _("mm/s"),
-                "value": int(float(conf['square_corner_velocity'])) if "square_corner_velocity" in conf else 5
+                "value": int(float(conf["max_velocity"]))
             }
         ]
+        # End FLSUN Changes
 
         for opt in self.options:
             self.add_option(opt)
@@ -139,5 +162,5 @@ class Panel(ScreenPanel):
             self._screen._ws.klippy.gcode_script(f"SET_VELOCITY_LIMIT MINIMUM_CRUISE_RATIO={value / 100}")
         elif opt == "max_velocity":
             self._screen._ws.klippy.gcode_script(f"SET_VELOCITY_LIMIT VELOCITY={value}")
-        elif opt == "square_corner_velocity":
-            self._screen._ws.klippy.gcode_script(f"SET_VELOCITY_LIMIT SQUARE_CORNER_VELOCITY={value}")
+        #elif opt == "square_corner_velocity": # FLSUN Changes
+            #self._screen._ws.klippy.gcode_script(f"SET_VELOCITY_LIMIT SQUARE_CORNER_VELOCITY={value}") # FLSUN Changes

@@ -120,6 +120,14 @@ class Panel(ScreenPanel):
         )
         self.labels["move_menu"].attach(grid, 0, 0, 1, 3)
         self.labels["move_menu"].attach(bottomgrid, 0, 3, 1, 1)
+        # Start FLSUN Changes
+        dist_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=2)
+        dist_box.pack_start(distgrid, True, True, 0)
+        spacer = Gtk.Label()
+        spacer.set_size_request(-1, 2)
+        dist_box.pack_start(spacer, False, False, 0)
+        self.labels["move_menu"].attach(dist_box, 0, 4, 1, 1)
+        # End FLSUN Changes
         self.labels["move_menu"].attach(distgrid, 0, 4, 1, 1)
 
         self.content.add(self.labels["move_menu"])

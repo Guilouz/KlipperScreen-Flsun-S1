@@ -307,7 +307,6 @@ trough {
 
 .horizontal_togglebuttons_active {
     background-color: @active;
-    font-weight: 600;
 }
 
 .horizontal_togglebuttons {
