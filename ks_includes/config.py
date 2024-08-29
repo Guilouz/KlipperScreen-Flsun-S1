@@ -185,6 +185,16 @@ class KlipperScreenConfig:
                     'moonraker_port', 'move_speed_xy', 'move_speed_z', 'screw_rotation',
                     'calibrate_x_position', 'calibrate_y_position',
                 )
+            # Start FLSUN Changes
+            elif section.startswith('topbar_sensor '):
+                strs = (
+                    'moonraker_sensor_id', 'moonraker_parameter', 'icon',
+                    'unit', 'fallback_value',
+                )
+                numbers = (
+                    'decimal_count',
+                )
+            # End FLSUN Changes
             elif section.startswith('preheat '):
                 strs = ('gcode', '')
                 numbers = [f'{option}' for option in config[section] if option != 'gcode']
@@ -321,7 +331,7 @@ class KlipperScreenConfig:
             # Start FLSUN Changes
             {"spool_weight_percent": {"section": "main", "name": _("Show Spool Weight in Percentage"), "type": "binary",
                                    "tooltip": _("Percentage instead of grams"),
-                                   "value": "False"}},
+                                   "value": "False", "callback": screen.reload_panels}},
             # End FLSUN Changes
             # {"": {"section": "main", "name": _(""), "type": ""}}
         ]
@@ -523,6 +533,17 @@ class KlipperScreenConfig:
             name = f"printer {name}"
 
         return None if name not in self.config else self.config[name]
+
+    # Start FLSUN Changes
+    def get_topbar_sensors(self):
+        return {sensor_cfg.replace("topbar_sensor ", ""): self.config[sensor_cfg] for sensor_cfg in self.config.sections() if sensor_cfg.startswith("topbar_sensor ")}
+
+    def get_topbar_sensor_config(self, name):
+        if not name.startswith("topbar_sensor "):
+            name = f"topbar_sensor {name}"
+
+        return None if name not in self.config else self.config[name]
+    # End FLSUN Changes
 
     def get_printers(self):
         return self.printers
