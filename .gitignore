@@ -9,3 +9,4 @@ venv/
 applet/
 *.DS_Store
 desktop.ini
+/.vs

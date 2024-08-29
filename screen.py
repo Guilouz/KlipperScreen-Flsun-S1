@@ -875,6 +875,10 @@ class KlipperScreen(Gtk.Window):
             logging.debug("Power status changed: %s", data)
             self.printer.process_power_update(data)
             self.panels['splash_screen'].check_power_status()
+        # Start FLSUN Changes
+        elif action == "notify_sensor_update":
+            self.printer.process_moon_sensors_update(data)
+        # End FLSUN Changes
         elif action == "notify_gcode_response" and self.printer.state not in ["error", "shutdown"]:
             if re.match('^(?:ok\\s+)?(B|C|T\\d*):', data):
                 return
@@ -1077,6 +1081,10 @@ class KlipperScreen(Gtk.Window):
             powerdevs = self.apiclient.send_request("machine/device_power/devices")
             if powerdevs is not False:
                 self.printer.configure_power_devices(powerdevs)
+        if "sensor" in self.server_info["components"]:
+            sensors = self.apiclient.send_request("server/sensors/list")
+            if sensors is not False:
+                self.printer.configure_moon_sensors(sensors)
         if "webcam" in self.server_info["components"]:
             cameras = self.apiclient.send_request("server/webcams/list")
             if cameras is not False:

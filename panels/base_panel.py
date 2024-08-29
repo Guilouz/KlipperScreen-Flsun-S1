@@ -2,7 +2,6 @@
 import logging
 
 import gi
-import json # FLSUN Changes
 
 gi.require_version("Gtk", "3.0")
 from gi.repository import GLib, Gtk, Pango
@@ -25,7 +24,7 @@ class BasePanel(ScreenPanel):
         self.current_extruder = None
         self.last_usage_report = datetime.now()
         self.usage_report = 0
-        self.custom_sensors = ["spool_humidity", "spool_weight"] # FLSUN Changes
+        self.ks_topbar_sensors_cfg = None # FLSUN Changes
         # Action bar buttons
         abscale = self.bts * 1.1
         self.control['back'] = self._gtk.Button('back', scale=abscale)
@@ -114,28 +113,6 @@ class BasePanel(ScreenPanel):
 
         self.update_time()
 
-    # Start FLSUN Changes
-    def get_dryingbox_data(self):
-        try:
-            with open(DRYING_BOX_JSON_PATH, 'r') as file:
-                data = json.load(file)
-                weight = data.get('result', {}).get('drybox', {}).get('weight', None)
-                humidity = data.get('result', {}).get('drybox', {}).get('humidity', None)
-        except FileNotFoundError:
-            logging.error(f"JSON file not found.")
-            weight = None
-            humidity = None
-        except json.JSONDecodeError as e:
-            logging.error(f"Error decoding in JSON file: {e}")
-            weight = None
-            humidity = None
-        except Exception as e:
-            logging.error(f"Error reading JSON file: {e}")
-            weight = None
-            humidity = None
-        return weight, humidity
-    # End FLSUN Changes
-
     def reload_icons(self):
         button: Gtk.Button
         for button in self.action_bar.get_children():
@@ -151,7 +128,6 @@ class BasePanel(ScreenPanel):
             for child in self.control['temp_box'].get_children():
                 self.control['temp_box'].remove(child)
             devices = self._printer.get_temp_devices()
-            devices = devices + self.custom_sensors # FSLUN Changes
             if not show or not devices:
                 return
 
@@ -193,11 +169,24 @@ class BasePanel(ScreenPanel):
                         n += 1
                         break
             # Start FLSUN Changes
-            for device in self.custom_sensors:
-                if n >= nlimit + 1:
-                    break
-                self.control['temp_box'].add(self.labels[f"{device}_box"])
-                n += 1
+            self.ks_topbar_sensors_cfg = self._config.get_topbar_sensors()
+            if self.ks_topbar_sensors_cfg is not None:
+                try:
+                    for device, cfg in self.ks_topbar_sensors_cfg.items():
+                        if n >= nlimit + 1:
+                            break
+                        self.labels[device] = Gtk.Label(ellipsize=Pango.EllipsizeMode.START)
+                        self.labels[f'{device}_box'] = Gtk.Box()
+                        icon = self.get_icon_by_name(cfg.get("icon", "heat-up"), img_size)
+                        if icon is not None:
+                            self.labels[f'{device}_box'].pack_start(icon, False, False, 3)
+                        self.labels[f'{device}_box'].pack_start(self.labels[device], False, False, 0)
+                        self.control['temp_box'].add(self.labels[f"{device}_box"])
+                        self.labels[device].set_label(cfg.get("fallback_value", ""))
+                        n += 1
+                    self.update_top_sensors();
+                except Exception as e:
+                    logging.error(f"Couldn't create custom sensors: {e}")
             # End FLSUN Changes
             self.control['temp_box'].show_all()
         except Exception as e:
@@ -226,16 +215,15 @@ class BasePanel(ScreenPanel):
         # Start FLSUN Changes
         elif device.startswith("heater_generic drying_box"):
             return self._gtk.Image("filament", img_size, img_size)
-        elif "humidity" in device:
-            return self._gtk.Image("humidity", img_size, img_size)
-        elif "weight" in device:
-            return self._gtk.Image("weight", img_size, img_size)
         # End FLSUN Changes
         elif device.startswith("heater_generic"):
             return self._gtk.Image("heater", img_size, img_size)
         else:
             return self._gtk.Image("heat-up", img_size, img_size)
-
+    # Start FLSUN Changes
+    def get_icon_by_name(self, icon_name, img_size):
+        return self._gtk.Image(icon_name, img_size, img_size)
+    # End FLSUN Changes
     def activate(self):
         if self.time_update is None:
             self.time_update = GLib.timeout_add_seconds(1, self.update_time)
@@ -310,29 +298,10 @@ class BasePanel(ScreenPanel):
                         for dialog in self._screen.dialogs:
                             self._gtk.remove_dialog(dialog)
             return
-
+        
         # Start FLSUN Changes
-        elif action == "sensors:sensor_update":
-            logging.debug("Sensor updated: %s", data)
-
-        if "spool_humidity" and "spool_weight" in self.labels:
-            weight, humidity = self.get_dryingbox_data()
-            self.labels["spool_humidity"].set_label(f"{humidity if humidity is not None else 0}%")
-            if self._config.get_main_config().getboolean('spool_weight_percent', True):
-                weight_label = f"{weight if weight is not None else 0}%"
-            else:
-                if weight is not None:
-                    if weight == 0:
-                        weight_label = "0g"
-                    elif weight in range(10, 101, 10):
-                        lower_bound = (weight - 10) * 10
-                        upper_bound = weight * 10
-                        weight_label = f"{lower_bound}g ~ {upper_bound}g" if weight != 100 else "900g ~ 1Kg"
-                    else:
-                        weight_label = "0g"
-                else:
-                    weight_label = "0g"
-            self.labels["spool_weight"].set_label(weight_label)
+        elif action == "notify_sensor_update":
+            self.update_top_sensors()
         # End FLSUN Changes
         if action != "notify_status_update" or self._screen.printer is None:
             return
@@ -361,7 +330,42 @@ class BasePanel(ScreenPanel):
             self.control['temp_box'].show_all()
 
         return False
-
+    # Start FSLUN Changes
+    def update_top_sensors(self):
+        try:
+            if self.ks_topbar_sensors_cfg is not None:
+                for device, cfg in self.ks_topbar_sensors_cfg.items():
+                    sensor = self._printer.get_moon_sensor_params(cfg["moonraker_sensor_id"])
+                    label_text = cfg.get("fallback_value", "")
+                    if sensor is not None:
+                        value = sensor[cfg["moonraker_parameter"]]
+                        if value is not None:
+                            unit = cfg.get("unit", "")
+                            decimals = cfg.get("decimal_places",1)
+                            if device in self.labels:
+                                if device == "spool_weight" and not self._config.get_main_config().getboolean('spool_weight_percent', True):
+                                    if value == 0:
+                                        value_unit = "0g"
+                                    elif value in range(10, 101, 10):
+                                        lower_bound = (value - 10) * 10
+                                        upper_bound = value * 10
+                                        value_unit = f"{lower_bound}g ~ {upper_bound}g" if value != 100 else "900g ~ 1Kg"
+                                    else:
+                                        value_unit = "0g"
+                                else:
+                                    value_unit = f"{value:.{decimals}f}{unit}"
+                                name = ""
+                                if self.titlebar_name_type == "full":
+                                    name = device.split()[1] if len(device.split()) > 1 else device
+                                    name = f'{self.prettify(name)}: '
+                                elif self.titlebar_name_type == "short":
+                                    name = device.split()[1] if len(device.split()) > 1 else device
+                                    name = f"{name[:1].upper()}: "
+                                label_text = f"{name}{value_unit}"
+                    self.labels[device].set_label(label_text)
+        except Exception as e:
+            logging.error(f"Error getting value from custom sensors: {e}")
+    # End FLSUN Changes
     def remove(self, widget):
         self.content.remove(widget)
 
