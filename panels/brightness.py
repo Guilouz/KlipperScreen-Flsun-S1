@@ -61,7 +61,7 @@ class Panel(ScreenPanel):
 
         hbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=15)
 
-        min_btn = self._gtk.Button("arrow-down", _("Min"), "color1")
+        min_btn = self._gtk.Button("brightness-min", _("Min"), "color1")
         min_btn.set_hexpand(False)
         min_btn.connect("clicked", self.on_min_button_clicked)
         hbox.pack_start(min_btn, False, False, 0)
@@ -73,7 +73,7 @@ class Panel(ScreenPanel):
         self.scale.get_style_context().add_class("option_slider")
         self.scale.connect("value-changed", self.change_brightness)
 
-        max_btn = self._gtk.Button("arrow-up", _("Max"), "color2")
+        max_btn = self._gtk.Button("brightness-max", _("Max"), "color2")
         max_btn.set_hexpand(False)
         max_btn.connect("clicked", self.on_max_button_clicked)
         hbox.pack_start(self.scale, True, True, 0)
