@@ -144,6 +144,8 @@ class Panel(ScreenPanel):
 
         filament_sensors = self._printer.get_filament_sensors()
         sensors = Gtk.Grid(valign=Gtk.Align.CENTER, row_spacing=5, column_spacing=5)
+        sensors.set_margin_top(20) # FLSUN Changes
+        sensors.set_margin_bottom(20) # FLSUN Changes
         with_switches = (
             len(filament_sensors) < 4
             and not (self._screen.vertical_mode and self._screen.height < 600)

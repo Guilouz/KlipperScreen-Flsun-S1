@@ -190,7 +190,7 @@ popover button {
     border: 0;
     padding: 0;
     background-color: @bg;
-    background-image: url("./styles/z-bolt/background.png");
+    background-image: url("./styles/background.png");
     margin: 0;
 }
 
