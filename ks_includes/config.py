@@ -192,7 +192,7 @@ class KlipperScreenConfig:
                     'unit', 'fallback_value',
                 )
                 numbers = (
-                    'decimal_places',
+                    'decimal_count',
                 )
             # End FLSUN Changes
             elif section.startswith('preheat '):

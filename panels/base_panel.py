@@ -341,7 +341,7 @@ class BasePanel(ScreenPanel):
                         value = sensor[cfg["moonraker_parameter"]]
                         if value is not None:
                             unit = cfg.get("unit", "")
-                            decimals = cfg.get("decimal_places",1)
+                            decimals = cfg.get("decimal_count",1)
                             if device in self.labels:
                                 if device == "spool_weight" and not self._config.get_main_config().getboolean('spool_weight_percent', True):
                                     if value == 0:
