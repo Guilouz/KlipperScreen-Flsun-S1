@@ -896,7 +896,7 @@ class KlipperScreen(Gtk.Window):
             elif "!! Extrude below minimum temp" in data:
                 if "temperature" != self._cur_panels[-1]:
                     self.show_panel("temperature", extra=self.printer.get_stat("toolhead", "extruder"))
-                self.show_popup_message(_("Temperature too low to extrude"))
+                self.show_popup_message(_("Temperature too low to extrude") + f"!\n" + _("Please heat the nozzle.")) # FLSUN Changes
                 return
             elif data.startswith("!! "):
                 self.show_popup_message(data[3:], 3, from_ws=True)
