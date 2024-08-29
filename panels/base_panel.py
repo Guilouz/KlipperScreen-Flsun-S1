@@ -335,14 +335,14 @@ class BasePanel(ScreenPanel):
         try:
             if self.ks_topbar_sensors_cfg is not None:
                 for device, cfg in self.ks_topbar_sensors_cfg.items():
-                    sensor = self._printer.get_moon_sensor_params(cfg["moonraker_sensor_id"])
-                    label_text = cfg.get("fallback_value", "")
-                    if sensor is not None:
-                        value = sensor[cfg["moonraker_parameter"]]
-                        if value is not None:
-                            unit = cfg.get("unit", "")
-                            decimals = cfg.get("decimal_count",1)
-                            if device in self.labels:
+                    if device in self.labels:
+                        sensor = self._printer.get_moon_sensor_params(cfg["moonraker_sensor_id"])
+                        label_text = cfg.get("fallback_value", "")
+                        if sensor is not None:
+                            value = sensor[cfg["moonraker_parameter"]]
+                            if value is not None:
+                                unit = cfg.get("unit", "")
+                                decimals = cfg.get("decimal_count",1)
                                 if device == "spool_weight" and not self._config.get_main_config().getboolean('spool_weight_percent', True):
                                     if value == 0:
                                         value_unit = "0g"
@@ -362,7 +362,7 @@ class BasePanel(ScreenPanel):
                                     name = device.split()[1] if len(device.split()) > 1 else device
                                     name = f"{name[:1].upper()}: "
                                 label_text = f"{name}{value_unit}"
-                    self.labels[device].set_label(label_text)
+                        self.labels[device].set_label(label_text)
         except Exception as e:
             logging.error(f"Error getting value from custom sensors: {e}")
     # End FLSUN Changes
