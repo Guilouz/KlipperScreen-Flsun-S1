@@ -180,9 +180,11 @@ class Printer:
         self.moon_sensors = {}
 
         logging.debug(f"Processing moonraker sensors: {data}")
-        for x in data['sensors'].values():
-            self.moon_sensors[x['id']] = x['values']
-        logging.debug(f"Moonraker sensors: {self.moon_sensors}")
+        if "sensors" in data:
+            for x in data['sensors'].values():
+                if "values" in x and "id" in x:
+                    self.moon_sensors[x['id']] = x['values']
+            logging.debug(f"Moonraker sensors: {self.moon_sensors}")
     # End FLSUN Changes
 
     def configure_cameras(self, data):
