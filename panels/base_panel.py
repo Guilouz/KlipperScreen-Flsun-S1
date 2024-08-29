@@ -335,10 +335,10 @@ class BasePanel(ScreenPanel):
         try:
             if self.ks_topbar_sensors_cfg is not None:
                 for device, cfg in self.ks_topbar_sensors_cfg.items():
-                    if device in self.labels:
+                    if device in self.labels and "moonraker_sensor_id" in cfg and "moonraker_parameter" in cfg:
                         sensor = self._printer.get_moon_sensor_params(cfg["moonraker_sensor_id"])
                         label_text = cfg.get("fallback_value", "")
-                        if sensor is not None:
+                        if sensor is not None and cfg["moonraker_parameter"] in sensor:
                             value = sensor[cfg["moonraker_parameter"]]
                             if value is not None:
                                 unit = cfg.get("unit", "")
