@@ -1,5 +1,6 @@
 import logging
 import gi
+import re
 
 gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk, Pango
@@ -41,7 +42,7 @@ class Panel(ScreenPanel):
             param_value_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
 
             param_label = Gtk.Label(hexpand=True, halign=Gtk.Align.START)
-            param_label.set_markup(f"{param}")
+            param_label.set_markup(f"{self.nice_name(param)}")
             param_value_box.add(param_label)
 
             value_label = Gtk.Label(halign=Gtk.Align.END)
@@ -65,6 +66,15 @@ class Panel(ScreenPanel):
 
         self.labels['devices'].insert_row(pos)
         self.labels['devices'].attach(self.devices[device]['row'], 0, pos, 1, 1)
+
+    def nice_name(self, name):
+        name = name.replace('_', ' ')
+        parts = re.split(r'(\(.*\))', name)
+        parts[0] = parts[0].strip().capitalize()
+        if len(parts) > 1:
+            parts[1] = parts[1].upper()
+        name = ' '.join(parts)
+        return name
 
     def load_sensors(self):
         for child in self.labels['devices'].get_children():
