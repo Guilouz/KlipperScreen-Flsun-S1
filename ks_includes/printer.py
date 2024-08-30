@@ -1,4 +1,5 @@
 import logging
+from re import S
 import gi
 
 gi.require_version("Gtk", "3.0")
@@ -149,9 +150,14 @@ class Printer:
             self.power_devices[data['device']]['status'] = data['status']
 
     def process_moon_sensors_update(self, data):
+        logging.info(f"{data}")
         for sensor in data:
             if sensor in self.moon_sensors:
-                self.moon_sensors[sensor] = data[sensor]
+                for name, param in self.moon_sensors[sensor].items():
+                    if name in data[sensor]:
+                        param["value"] = data[sensor][name]
+                    else:
+                        param["value"] = None
 
     def change_state(self, state):
         if state not in list(self.state_callbacks):
@@ -178,9 +184,16 @@ class Printer:
 
         logging.debug(f"Processing moonraker sensors: {data}")
         if "sensors" in data:
-            for x in data['sensors'].values():
-                if "values" in x and "id" in x:
-                    self.moon_sensors[x['id']] = x['values']
+            self.moon_sensors = {
+                                    sensor['id']: {
+                                        param['name']: {
+                                            'value': sensor['values'].get(param['name'], None),
+                                            'units': param.get('units', None)
+                                        }
+                                        for param in sensor['parameter_info']
+                                    }
+                                    for sensor in data['sensors'].values()
+                                }
             logging.debug(f"Moonraker sensors: {self.moon_sensors}")
 
     def configure_cameras(self, data):

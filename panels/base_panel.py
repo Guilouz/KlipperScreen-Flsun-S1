@@ -338,10 +338,10 @@ class BasePanel(ScreenPanel):
                     if device in self.labels and "moonraker_sensor_id" in cfg and "moonraker_parameter" in cfg:
                         sensor = self._printer.get_moon_sensor_params(cfg["moonraker_sensor_id"])
                         label_text = cfg.get("fallback_value", "")
-                        if sensor is not None and cfg["moonraker_parameter"] in sensor:
-                            value = sensor[cfg["moonraker_parameter"]]
+                        if sensor is not None and cfg["moonraker_parameter"] in sensor and "value" in sensor[cfg["moonraker_parameter"]]:
+                            value = sensor[cfg["moonraker_parameter"]]["value"]
                             if value is not None:
-                                unit = cfg.get("unit", "")
+                                unit = sensor[cfg["moonraker_parameter"]].get("units", "")
                                 decimals = cfg.get("decimal_count",1)
                                 if device == "spool_weight" and not self._config.get_main_config().getboolean('spool_weight_percent', True):
                                     if value == 0:
