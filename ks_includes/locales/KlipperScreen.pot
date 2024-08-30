@@ -18,6 +18,18 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
+msgid "Do you want to start motors calibration?"
+msgstr ""
+
+msgid "Do you want to start measuring resonances?"
+msgstr ""
+
+msgid "Do you want to start bed calibrations?\n\nA Delta Calibration and a Bed Leveling will be performed."
+msgstr ""
+
+msgid "Do you want to start Z-Offset calibration?"
+msgstr ""
+
 msgid "YOUR PRINTER DOES NOT SEEM TO BE CALIBRATED!"
 msgstr ""
 

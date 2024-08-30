@@ -71,7 +71,12 @@ class Panel(ScreenPanel):
         pos.attach(self.widgets['zposition'], 0, 1, 2, 1)
 
         if self.probe:
-            pos.attach(Gtk.Label(label=_("Probe Offset") + ": "), 0, 2, 2, 1)
+            # Start FLSUN Changes
+            #pos.attach(Gtk.Label(label=_("Probe Offset") + ": "), 0, 2, 2, 1)    
+            label_probe_offset = Gtk.Label(label="<b>" + _("Probe Offset") + "</b>")
+            label_probe_offset.set_use_markup(True)
+            pos.attach(label_probe_offset, 0, 2, 2, 1)
+            # End FLSUN Changes
             pos.attach(Gtk.Label(label=_("Saved")), 0, 3, 1, 1)
             pos.attach(Gtk.Label(label=_("New")), 1, 3, 1, 1)
             pos.attach(Gtk.Label(label=f"{self.z_offset:.3f}"), 0, 4, 1, 1)
@@ -209,7 +214,7 @@ class Panel(ScreenPanel):
         #model = self.dropdown.get_model()
         #command = model[iterable][0]
 
-        self.buttons['start'].set_sensitive(False)
+        #self.buttons['start'].set_sensitive(False)
         #self.dropdown.set_sensitive(False)
 
         #self._screen._ws.klippy.gcode_script("SET_GCODE_OFFSET Z=0") # FLSUN Changes
@@ -221,7 +226,9 @@ class Panel(ScreenPanel):
         if not self.calibration_z_offset:
             self._screen.show_popup_message("Macro CALIBRATION_Z_OFFSET " + _("not found!\nPlease update your configuration files."))
         else:
-            self._screen._ws.klippy.gcode_script("CALIBRATION_Z_OFFSET")
+            self.buttons['start'].set_sensitive(False)
+            script = {"script": "CALIBRATION_Z_OFFSET"}
+            self._screen._confirm_send_action(None, _("Do you want to start Z-Offset calibration?"), "printer.gcode.script", script)
         #else:
             #self._screen._ws.klippy.gcode_script(command)
         # End FLSUN Changes
@@ -343,7 +350,7 @@ class Panel(ScreenPanel):
     def buttons_calibrating(self):
         self.buttons['start'].get_style_context().remove_class('color3')
         self.buttons['start'].set_sensitive(False)
-        self.dropdown.set_sensitive(False)
+        #self.dropdown.set_sensitive(False) # FLSUN Changes
 
         self.buttons['zpos'].set_sensitive(True)
         self.buttons['zpos'].get_style_context().add_class('color4')
@@ -357,7 +364,7 @@ class Panel(ScreenPanel):
     def buttons_not_calibrating(self):
         self.buttons['start'].get_style_context().add_class('color3')
         self.buttons['start'].set_sensitive(True)
-        self.dropdown.set_sensitive(True)
+        #self.dropdown.set_sensitive(True) # FLSUN Changes
 
         self.buttons['zpos'].set_sensitive(False)
         self.buttons['zpos'].get_style_context().remove_class('color4')

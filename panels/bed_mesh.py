@@ -240,16 +240,18 @@ class Panel(ScreenPanel):
         self.remove_create()
 
     def calibrate_mesh(self, widget):
-        widget.set_sensitive(False)
-        self._screen.show_popup_message(_("Calibrating"), level=1)
         # Start FLSUN Changes
+        #widget.set_sensitive(False)
+        #self._screen.show_popup_message(_("Calibrating"), level=1)
         #if self._printer.get_stat("toolhead", "homed_axes") != "xyz":
             #self._screen._ws.klippy.gcode_script("G28")
         #self._screen._send_action(widget, "printer.gcode.script", {"script": "BED_MESH_CALIBRATE"})
         if not self.calibration_bed:
             self._screen.show_popup_message("Macro CALIBRATION_BED " + _("not found!\nPlease update your configuration files."))
         else:
-            self._screen._send_action(widget, "printer.gcode.script", {"script": "CALIBRATION_BED"})
+            widget.set_sensitive(False)
+            script = {"script": "CALIBRATION_BED"}
+            self._screen._confirm_send_action(None, _("Do you want to start bed calibrations?\n\nA Delta Calibration and a Bed Leveling will be performed."), "printer.gcode.script", script)
         # End FLSUN Changes
 
     def send_clear_mesh(self, widget):
