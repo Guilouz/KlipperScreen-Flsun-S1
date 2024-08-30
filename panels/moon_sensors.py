@@ -30,7 +30,7 @@ class Panel(ScreenPanel):
         name = Gtk.Label(
             hexpand=True, vexpand=True, halign=Gtk.Align.START, valign=Gtk.Align.CENTER,
             wrap=True, wrap_mode=Pango.WrapMode.WORD_CHAR)
-        name.set_markup(f"<big><b>{device}</b></big>")
+        name.set_markup(f"<big><b>{self.nice_name(device)}</b></big>")
         name.set_margin_top(15)
 
         labels = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
