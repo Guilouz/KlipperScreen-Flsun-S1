@@ -113,6 +113,11 @@ class Panel(ScreenPanel):
         if self.cur_directory != "gcodes":
             self.change_dir()
         self._screen.files.add_callback(self._callback)
+        # FLSUN Changes
+        bed_mesh = self._printer.get_stat("bed_mesh", "profile_name")
+        if not bed_mesh:
+            self._screen.show_popup_message(_("YOUR PRINTER DOES NOT SEEM TO BE CALIBRATED!") + f"\n" + _("It's necessary to perform calibrations before starting a print.") + f"\n" + _("Go to Configurations → Calibrations menu to calibrate your printer."))
+        # End FLSUN Changes
 
     def deactivate(self):
         self._screen.files.remove_callback(self._callback)

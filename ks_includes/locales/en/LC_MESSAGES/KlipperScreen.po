@@ -13,6 +13,15 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 3.4.4\n"
 
+msgid "YOUR PRINTER DOES NOT SEEM TO BE CALIBRATED!"
+msgstr ""
+
+msgid "It's necessary to perform calibrations before starting a print."
+msgstr ""
+
+msgid "Go to Configurations → Calibrations menu to calibrate your printer."
+msgstr ""
+
 msgid "Please heat the nozzle."
 msgstr ""
 

@@ -178,7 +178,6 @@ class Printer:
     # Start FLSUN Changes
     def configure_moon_sensors(self, data):
         self.moon_sensors = {}
-
         logging.debug(f"Processing moonraker sensors: {data}")
         if "sensors" in data:
             for x in data['sensors'].values():
