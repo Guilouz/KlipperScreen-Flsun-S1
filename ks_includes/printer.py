@@ -153,11 +153,11 @@ class Printer:
         logging.info(f"{data}")
         for sensor in data:
             if sensor in self.moon_sensors:
-                for name, param in self.moon_sensors[sensor].items():
-                    if name in data[sensor]:
-                        param["value"] = data[sensor][name]
+                for param, value in self.moon_sensors[sensor].items():
+                    if param in data[sensor]:
+                        value["value"] = data[sensor][param]
                     else:
-                        param["value"] = None
+                        value["value"] = None
 
     def change_state(self, state):
         if state not in list(self.state_callbacks):
