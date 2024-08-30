@@ -1083,7 +1083,7 @@ class KlipperScreen(Gtk.Window):
                 self.printer.configure_power_devices(powerdevs)
         # Start FLSUN Changes
         if "sensor" in self.server_info["components"]:
-            sensors = self.apiclient.send_request("server/sensors/list?extended=True")
+            sensors = self.apiclient.send_request("server/sensors/list")
             if sensors is not False:
                 self.printer.configure_moon_sensors(sensors)
         # End FLSUN Changes
