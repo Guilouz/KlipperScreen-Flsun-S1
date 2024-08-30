@@ -31,11 +31,12 @@ class Panel(ScreenPanel):
             hexpand=True, vexpand=True, halign=Gtk.Align.START, valign=Gtk.Align.CENTER,
             wrap=True, wrap_mode=Pango.WrapMode.WORD_CHAR)
         name.set_markup(f"<big><b>{device}</b></big>")
+        name.set_margin_top(15)
 
         labels = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         labels.add(name)
         
-        params_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        params_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=5)
         sensors = self._printer.get_moon_sensor_params(device)
         params = {}
         for param, value in sensors.items():
@@ -43,13 +44,16 @@ class Panel(ScreenPanel):
 
             param_label = Gtk.Label(hexpand=True, halign=Gtk.Align.START)
             param_label.set_markup(f"{self.nice_name(param)}")
+            param_label.set_margin_left(0)
             param_value_box.add(param_label)
 
             value_label = Gtk.Label(halign=Gtk.Align.END)
-            value_label.set_label(f"{value}")
+            value_label.set_label(f"{value['value']} {value['units']}")
+            value_label.set_margin_right(20)
             param_value_box.add(value_label)
             params[param] = value_label
-            params_box.add(param_value_box)
+            params_box.add(param_value_box)        
+        params_box.set_margin_bottom(15)
 
         dev = Gtk.Box(
             spacing=5, hexpand=True, vexpand=False, valign=Gtk.Align.CENTER, orientation=Gtk.Orientation.VERTICAL)
@@ -69,11 +73,15 @@ class Panel(ScreenPanel):
 
     def nice_name(self, name):
         name = name.replace('_', ' ')
-        parts = re.split(r'(\(.*\))', name)
-        parts[0] = parts[0].strip().capitalize()
-        if len(parts) > 1:
-            parts[1] = parts[1].upper()
-        name = ' '.join(parts)
+        name = re.split(r'\(', name)[0]
+        name = name.strip()
+        name = name.capitalize()
+        # name = name.replace('_', ' ')
+        # parts = re.split(r'(\(.*\))', name)
+        # parts[0] = parts[0].strip().capitalize()
+        # if len(parts) > 1:
+        #     parts[1] = parts[1].upper()
+        # name = ' '.join(parts)
         return name
 
     def load_sensors(self):
@@ -95,4 +103,4 @@ class Panel(ScreenPanel):
                     if sensors is not None:
                         for param, value in sensors.items():
                             if param in self.devices[device]["params"]:
-                                self.devices[device]["params"][param].set_label(f"{value}")
+                                self.devices[device]["params"][param].set_label(f"{value['value']} {value['units']}")
