@@ -228,7 +228,7 @@ class Panel(ScreenPanel):
         else:
             self.buttons['start'].set_sensitive(False)
             script = {"script": "CALIBRATION_Z_OFFSET"}
-            self._screen._confirm_send_action(None, _("Do you want to start Z-Offset calibration?"), "printer.gcode.script", script)
+            self._screen._confirm_send_action(None, _("Do you want to start Z Offset calibration?"), "printer.gcode.script", script)
         #else:
             #self._screen._ws.klippy.gcode_script(command)
         # End FLSUN Changes

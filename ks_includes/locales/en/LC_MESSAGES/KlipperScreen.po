@@ -25,7 +25,7 @@ msgid ""
 "A Delta Calibration and a Bed Leveling will be performed."
 msgstr ""
 
-msgid "Do you want to start Z-Offset calibration?"
+msgid "Do you want to start Z Offset calibration?"
 msgstr ""
 
 msgid "YOUR PRINTER DOES NOT SEEM TO BE CALIBRATED!"
