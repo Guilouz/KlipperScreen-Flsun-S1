@@ -150,7 +150,6 @@ class Printer:
             self.power_devices[data['device']]['status'] = data['status']
 
     def process_moon_sensors_update(self, data):
-        logging.info(f"{data}")
         for sensor in data:
             if sensor in self.moon_sensors:
                 for param, value in self.moon_sensors[sensor].items():
