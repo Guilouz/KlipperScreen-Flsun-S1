@@ -4,7 +4,7 @@ import os
 import gi
 
 gi.require_version("Gtk", "3.0")
-from gi.repository import Gtk
+from gi.repository import Gtk, Pango
 from ks_includes.screen_panel import ScreenPanel
 
 class Panel(ScreenPanel):
@@ -53,10 +53,9 @@ class Panel(ScreenPanel):
         vbox.set_hexpand(True)
 
         name = _("Brightness")
-        title_label = Gtk.Label()
+        title_label = Gtk.Label(hexpand=True, vexpand=True, halign=Gtk.Align.START, valign=Gtk.Align.CENTER,
+                         wrap=True, wrap_mode=Pango.WrapMode.WORD_CHAR)
         title_label.set_markup(f"\n<big><b>{name}</b></big>\n")
-        title_label.set_justify(Gtk.Justification.CENTER)
-        title_label.set_halign(Gtk.Align.CENTER)
         vbox.pack_start(title_label, False, False, 10)
 
         hbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=15)
