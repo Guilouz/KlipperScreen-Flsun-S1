@@ -958,10 +958,13 @@ class KlipperScreen(Gtk.Window):
             self.panels[self._cur_panels[-1]].process_update(*args)
 
     def _confirm_send_action(self, widget, text, method, params=None):
+        # Start FLSUN Changes
         buttons = [
-            {"name": _("Accept"), "response": Gtk.ResponseType.OK, "style": 'dialog-info'},
-            {"name": _("Cancel"), "response": Gtk.ResponseType.CANCEL, "style": 'dialog-error'}
+            {"name": _("Cancel"), "response": Gtk.ResponseType.CANCEL, "style": 'dialog-error'},
+            {"name": _("Accept"), "response": Gtk.ResponseType.OK, "style": 'dialog-info'}
+            
         ]
+        # End FLSUN Changes
 
         try:
             j2_temp = self.env.from_string(text)
@@ -978,6 +981,30 @@ class KlipperScreen(Gtk.Window):
         self.confirm = self.gtk.Dialog(
             "KlipperScreen", buttons, label, self._confirm_send_action_response, method, params
         )
+
+    # Start FLSUN Changes
+    def _confirm_unload_action(self, widget, text, method, params=None):
+        buttons = [
+            {"name": _("Cancel"), "response": Gtk.ResponseType.CANCEL, "style": 'dialog-error'},
+            {"name": _("Unload"), "response": Gtk.ResponseType.OK, "style": 'dialog-info'}
+        ]
+
+        try:
+            j2_temp = self.env.from_string(text)
+            text = j2_temp.render()
+        except Exception as e:
+            logging.debug(f"Error parsing jinja for confirm_unload_action\n{e}\n\n{traceback.format_exc()}")
+
+        label = Gtk.Label(hexpand=True, vexpand=True, halign=Gtk.Align.CENTER, valign=Gtk.Align.CENTER,
+                          wrap=True, wrap_mode=Pango.WrapMode.WORD_CHAR)
+        label.set_markup(text)
+
+        if self.confirm is not None:
+            self.gtk.remove_dialog(self.confirm)
+        self.confirm = self.gtk.Dialog(
+            "KlipperScreen", buttons, label, self._confirm_send_action_response, method, params
+        )
+    # End FLSUN Changes
 
     def _confirm_send_action_response(self, dialog, response_id, method, params):
         self.gtk.remove_dialog(dialog)

@@ -13,6 +13,18 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 3.4.4\n"
 
+msgid ""
+"TO PREVENT EXTRUDER CLOG, FOLLOW THESE STEPS:\n"
+"\n"
+"\n"
+"1. Unclip the PTFE tube and press the lower spring clip of the PTFE "
+"connector.\n"
+"\n"
+"2. Remove the PTFE tube from the connector.\n"
+"\n"
+"3. Cut the filament and press Unload button."
+msgstr ""
+
 msgid "Do you want to start motors calibration?"
 msgstr ""
 
@@ -614,7 +626,8 @@ msgstr ""
 msgid "Klipper will reboot"
 msgstr ""
 
-msgid "LOAD_FILAMENT/UNLOAD_FILAMENT are hidden and should be used from extrude"
+msgid ""
+"LOAD_FILAMENT/UNLOAD_FILAMENT are hidden and should be used from extrude"
 msgstr ""
 
 msgid "Language"
