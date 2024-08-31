@@ -12,37 +12,18 @@ class Panel(ScreenPanel):
         title = title or _("Brightness")
         super().__init__(screen, title)
 
-        self.brightness_command = self._screen._config.get_main_config().get('brightness_command')
         self.brightness = 0
         self.min_brightness = 5
         self.max_brightness = 255
 
-        backlight_devices = os.listdir("/sys/class/backlight/")
-        logging.debug(f"Backlights: {backlight_devices}")
-
-        if not self.brightness_command and not backlight_devices:
-            self._screen.show_popup_message(_("Backlight not configured"), level=3)
-            self.back()
-            return
-
-        if not self.brightness_command:
-            device = backlight_devices[0] if backlight_devices else None
-            brightness_path = f"/sys/class/backlight/{device}/brightness"
-            max_brightness_path = f"/sys/class/backlight/{device}/max_brightness"
-            min_brightness_path = f"/sys/class/backlight/{device}/min_brightness"
-            self.brightness_command = f"echo {{value}} >{brightness_path}"
-            try:
-                self.max_brightness = int(subprocess.check_output(f"cat {max_brightness_path}", shell=True).strip())
-            except Exception as e:
-                logging.warning(f"Could not read max brightness: {e}")
-            try:
-                self.min_brightness = int(subprocess.check_output(f"cat {min_brightness_path}", shell=True).strip())
-            except Exception as e:
-                logging.warning(f"Could not read min brightness: {e}")
-            try:
-                self.brightness = int(subprocess.check_output(f"cat {brightness_path}", shell=True).strip())
-            except Exception as e:
-                logging.warning(f"Could not read current brightness: {e}")
+        brightness_path = "/sys/devices/platform/backlight/backlight/backlight/brightness"
+        brightness_backup_path = "/home/pi/flsun-os/brightness"
+        self.brightness_command = f"echo {{value}} >{brightness_path}"
+        self.brightness_backup_command = f"echo {{value}} >{brightness_backup_path}"
+        try:
+            self.brightness = int(subprocess.check_output(f"cat {brightness_path}", shell=True).strip())
+        except Exception as e:
+            logging.warning(f"Could not read current brightness: {e}")
 
         self.create_brightness_control()
 
@@ -94,8 +75,10 @@ class Panel(ScreenPanel):
     def set_brightness(self, value):
         value = int(value)
         bash_command = self.brightness_command.format(value=value)
+        bash_backup_command = self.brightness_backup_command.format(value=value)
         try:
             subprocess.run(bash_command, shell=True, check=True)
+            subprocess.run(bash_backup_command, shell=True, check=True)
             logging.info(f"Brightness set to {value}")
             if self.scale:
                 self.scale.set_value(value)
