@@ -182,18 +182,21 @@ class Printer:
         self.moon_sensors = {}
 
         logging.debug(f"Processing moonraker sensors: {data}")
-        if "sensors" in data:
-            self.moon_sensors = {
-                                    sensor['id']: {
-                                        param['name']: {
-                                            'value': sensor['values'].get(param['name'], None),
-                                            'units': param.get('units', None)
+        try: 
+            if "sensors" in data:
+                self.moon_sensors = {
+                                        sensor['id']: {
+                                            param['name']: {
+                                                'value': sensor['values'].get(param['name'], None),
+                                                'units': param.get('units', None)
+                                            }
+                                            for param in sensor.get('parameter_info', [])
                                         }
-                                        for param in sensor['parameter_info']
+                                        for sensor in data['sensors'].values()
                                     }
-                                    for sensor in data['sensors'].values()
-                                }
-            logging.debug(f"Moonraker sensors: {self.moon_sensors}")
+                logging.debug(f"Moonraker sensors: {self.moon_sensors}")
+        except Exception as e:
+            logging.error(f"Error configuring moonraker sensors: {e}")
 
     def configure_cameras(self, data):
         self.cameras = data
