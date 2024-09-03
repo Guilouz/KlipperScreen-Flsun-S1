@@ -995,14 +995,26 @@ class KlipperScreen(Gtk.Window):
         except Exception as e:
             logging.debug(f"Error parsing jinja for confirm_unload_action\n{e}\n\n{traceback.format_exc()}")
 
+        vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
+        vbox.set_margin_top(20)
+        vbox.set_margin_bottom(0)
+        vbox.set_margin_start(0)
+        vbox.set_margin_end(0)
+
         label = Gtk.Label(hexpand=True, vexpand=True, halign=Gtk.Align.CENTER, valign=Gtk.Align.CENTER,
-                          wrap=True, wrap_mode=Pango.WrapMode.WORD_CHAR)
+                      wrap=True, wrap_mode=Pango.WrapMode.WORD_CHAR)
         label.set_markup(text)
+        vbox.pack_start(label, True, True, 0)
+
+        image_path = os.path.join(klipperscreendir, "styles", "unload.png")
+        image = Gtk.Image.new_from_file(image_path)
+    
+        vbox.pack_start(image, True, True, 0)
 
         if self.confirm is not None:
             self.gtk.remove_dialog(self.confirm)
         self.confirm = self.gtk.Dialog(
-            "KlipperScreen", buttons, label, self._confirm_send_action_response, method, params
+            "KlipperScreen", buttons, vbox, self._confirm_send_action_response, method, params
         )
     # End FLSUN Changes
 
