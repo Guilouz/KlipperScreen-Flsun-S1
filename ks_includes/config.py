@@ -328,6 +328,9 @@ class KlipperScreenConfig:
                                       "value": "False", "callback": screen.reload_panels}},
             {"auto_open_extrude": {"section": "main", "name": _("Auto-open Extrude On Pause"), "type": "binary",
                                    "value": "True", "callback": screen.reload_panels}},
+            {"show_cursor": {"section": "main", "name": _("Show cursor"), "type": "binary",
+                             "tooltip": _("For mouse control or to verify touchscreen accuracy"),
+                             "value": "False", "callback": screen.update_cursor}},
             # Start FLSUN Changes
             {"spool_weight_percent": {"section": "main", "name": _("Show Spool Weight in Percentage"), "type": "binary",
                                    "tooltip": _("Percentage instead of grams"),

@@ -18,6 +18,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
+msgid "Show cursor"
+msgstr ""
+
+msgid "For mouse control or to verify touchscreen accuracy"
+msgstr ""
+
 msgid "TO PREVENT EXTRUDER CLOG, FOLLOW THESE STEPS:\n\n\n1. Unclip the PTFE tube and press the lower spring clip of the PTFE connector.\n\n2. Remove the PTFE tube from the connector.\n\n3. Cut the filament and press Unload button."
 msgstr ""
 

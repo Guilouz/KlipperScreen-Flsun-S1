@@ -217,11 +217,12 @@ class Panel(ScreenPanel):
         #self.buttons['start'].set_sensitive(False)
         #self.dropdown.set_sensitive(False)
 
-        #self._screen._ws.klippy.gcode_script("SET_GCODE_OFFSET Z=0") # FLSUN Changes
-        #self._screen._ws.klippy.gcode_script("BED_MESH_CLEAR") # FLSUN Changes
-        #if self._printer.get_stat("toolhead", "homed_axes") != "xyz": # FLSUN Changes
-            #self._screen._ws.klippy.gcode_script("G28") # FLSUN Changes
-        #self._move_to_position(*self._get_calibration_location()) # FLSUN Changes
+        #self._screen._ws.klippy.gcode_script("SET_GCODE_OFFSET Z=0")
+        #if self._printer.config_section_exists("bed_mesh"):
+            #self._screen._ws.klippy.gcode_script("BED_MESH_CLEAR")
+        #if self._printer.get_stat("toolhead", "homed_axes") != "xyz":
+            #self._screen._ws.klippy.gcode_script("G28")
+        #self._move_to_position(*self._get_calibration_location())
         
         if not self.calibration_z_offset:
             self._screen.show_popup_message("Macro CALIBRATION_Z_OFFSET " + _("not found!\nPlease update your configuration files."))
