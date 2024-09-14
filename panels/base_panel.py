@@ -269,14 +269,14 @@ class BasePanel(ScreenPanel):
                 if not ctx.has_class(error):
                     ctx.add_class(error)
                 self._screen.log_notification(f"{self._screen.connecting_to_printer}: {msg}", 2)
-                #self.titlelbl.set_label(msg) # FLSUN Changes
+                self.titlelbl.set_label(msg)
             elif ctx.has_class(error):
                 if (datetime.now() - self.last_usage_report).seconds < 5:
-                    #self.titlelbl.set_label(msg) # FLSUN Changes
+                    self.titlelbl.set_label(msg)
                     return
                 self.usage_report = 0
                 ctx.remove_class(error)
-                #self.titlelbl.set_label(f"{self._screen.connecting_to_printer}") # FLSUN Changes
+                self.titlelbl.set_label(f"{self._screen.connecting_to_printer}")
             return
 
         if action == "notify_update_response":
