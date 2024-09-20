@@ -641,6 +641,9 @@ msgstr ""
 msgid "Last Used"
 msgstr ""
 
+msgid "Last used"
+msgstr ""
+
 msgid "Layer Height"
 msgstr ""
 
