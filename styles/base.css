@@ -69,6 +69,7 @@ button {
     -gtk-icon-shadow: none;
 }
 
+.active image,
 button:active,
 .button_active,
 button.active {
@@ -167,6 +168,12 @@ entry {
     background-color: @active;
     border: .2em solid @bg;
     padding: .2em;
+    margin-right: .5em;
+}
+entry image {
+    margin: 0 .1em;
+    border-radius: 1em;
+    padding: .5em;
 }
 
 label {
