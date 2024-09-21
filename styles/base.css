@@ -170,6 +170,7 @@ entry {
     padding: .2em;
     margin-right: .5em;
 }
+
 entry image {
     margin: 0 .1em;
     border-radius: 1em;
@@ -654,4 +655,8 @@ flowboxchild {
 flowbox button {
     margin: 0.1em;
     padding: .5em;
+}
+
+keyboard_box {
+    padding: 0 20em;
 }

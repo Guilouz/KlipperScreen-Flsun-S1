@@ -79,25 +79,68 @@ class Panel(ScreenPanel):
             "row": row,
             "params": {},
         }
-        pattern = r'params\.(?P<param>[a-zA-Z0-9_]+)(?:\s*\|.*\s*default\(\s*(?P<default>[^\)]+)\))?'
+
+        pattern = re.compile(r'params\.(?P<param>[a-zA-Z0-9_]+)'
+                             r'(?:\s*\|\s*default\(\s*(?P<default>[^\)]+)\s*\))?'
+                             r'(?:\s*\|\s*(?P<type_hint>[a-zA-Z]+))?')
         for line in gcode:
             if line.startswith("{") and "params." in line:
                 result = re.search(pattern, line)
                 if result:
                     result = result.groupdict()
-                    default = result["default"] if "default" in result else ""
+                    default = result.get("default", "")
+                    type_hint = result.get("type_hint", "")
                     entry = Gtk.Entry(placeholder_text=default)
+                    if type_hint == "int":
+                        entry.set_input_purpose(Gtk.InputPurpose.DIGITS)
+                        entry.set_input_hints(Gtk.InputHints.NO_EMOJI)
+                        entry.get_style_context().add_class("active")
+                    elif type_hint == "float":
+                        entry.set_input_purpose(Gtk.InputPurpose.NUMBER)
+                        entry.set_input_hints(Gtk.InputHints.EMOJI)
+                        entry.get_style_context().add_class("active")
+                    else:
+                        entry.set_input_purpose(Gtk.InputPurpose.ALPHA)
+                        entry.set_input_hints(Gtk.InputHints.NONE)
+                    icon = self._gtk.PixbufFromIcon("hashtag")
+                    entry.set_icon_from_pixbuf(Gtk.EntryIconPosition.SECONDARY, icon)
+                    entry.connect("icon-press", self.on_icon_pressed)
                     self.macros[macro]["params"].update({result["param"]: entry})
 
         for param in self.macros[macro]["params"]:
             labels.add(Gtk.Label(param))
-            self.macros[macro]["params"][param].connect("focus-in-event", self._screen.show_keyboard)
+            self.macros[macro]["params"][param].connect("focus-in-event", self.show_keyboard)
             self.macros[macro]["params"][param].connect("focus-out-event", self._screen.remove_keyboard)
             labels.add(self.macros[macro]["params"][param])
+
+    def show_keyboard(self, entry, event):
+        self._screen.show_keyboard(entry, event)
+        GLib.timeout_add(100, self.scroll_to_entry, entry)
+
+    def scroll_to_entry(self, entry):
+        self.labels['macros_list'].get_vadjustment().set_value(
+            entry.get_allocation().y - 50
+        )
+
+    def on_icon_pressed(self, entry, icon_pos, event):
+        entry.grab_focus()
+        self._screen.remove_keyboard()
+        if entry.get_input_purpose() == Gtk.InputPurpose.ALPHA:
+            if entry.get_input_hints() in (Gtk.InputHints.NONE, Gtk.InputHints.EMOJI):
+                entry.set_input_purpose(Gtk.InputPurpose.NUMBER)
+            else:
+                entry.set_input_purpose(Gtk.InputPurpose.DIGITS)
+            entry.get_style_context().add_class("active")
+        else:
+            entry.set_input_purpose(Gtk.InputPurpose.ALPHA)
+            entry.get_style_context().remove_class("active")
+        self.show_keyboard(entry, event)
 
     def run_gcode_macro(self, widget, macro):
         params = ""
         for param in self.macros[macro]["params"]:
+            self.macros[macro]["params"][param].set_sensitive(False)  # Move focus to prevent
+            self.macros[macro]["params"][param].set_sensitive(True)  # reopening the osk
             value = self.macros[macro]["params"][param].get_text()
             if value:
                 if re.findall(r'[G|M]\d{1,3}', macro):
