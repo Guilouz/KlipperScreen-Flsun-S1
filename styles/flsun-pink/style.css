@@ -75,7 +75,10 @@ button.color4 {
     border-radius: 0.3em;
 }
 
-.active image,
+.active image {
+    background: @color3;
+}
+
 button.update {
     background: @color3;
     border: .1em solid @lines;
