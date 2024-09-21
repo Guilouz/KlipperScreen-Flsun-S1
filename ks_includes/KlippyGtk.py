@@ -256,7 +256,7 @@ class KlippyGtk:
         return dialog
 
     def remove_dialog(self, dialog, *args):
-    	if not isinstance(dialog, Gtk.Dialog):
+        if not isinstance(dialog, Gtk.Dialog):
             logging.error(f"Invalid dialog: {dialog}")
             return
         if self.screen.updating:
