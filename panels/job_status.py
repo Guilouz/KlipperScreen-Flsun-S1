@@ -714,7 +714,7 @@ class Panel(ScreenPanel):
             logging.debug(f"Changing job_status state from '{self.state}' to '{state}'")
             self.state = state
         if self.thumb_dialog:
-                self.close_dialog(self.thumb_dialog)
+            self.close_dialog(self.thumb_dialog)
         self.show_buttons_for_state()
 
     def _add_timeout(self, timeout):
