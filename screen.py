@@ -1260,7 +1260,7 @@ class KlipperScreen(Gtk.Window):
             logging.debug("Error: no entry provided for keyboard")
             return
 
-		if self.keyboard is not None:
+        if self.keyboard is not None:
             self.remove_keyboard()
             entry.grab_focus()
         kbd_grid = Gtk.Grid()
