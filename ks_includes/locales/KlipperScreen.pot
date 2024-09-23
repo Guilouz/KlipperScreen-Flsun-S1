@@ -18,6 +18,15 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
+msgid "Purge More"
+msgstr ""
+
+msgid "Purge Distance (mm)"
+msgstr ""
+
+msgid "Purge Speed (mm/s)"
+msgstr ""
+
 msgid "Show cursor"
 msgstr ""
 
@@ -294,7 +303,10 @@ msgstr ""
 msgid "Auto-close notifications"
 msgstr ""
 
-msgid "Auto-open Extrude On Pause"
+msgid "Auto-open filament management during Pause"
+msgstr ""
+
+msgid "Useful for M600 feature"
 msgstr ""
 
 msgid "Auto-scroll"

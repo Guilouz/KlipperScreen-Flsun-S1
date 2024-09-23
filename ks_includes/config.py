@@ -328,8 +328,11 @@ class KlipperScreenConfig:
             {"show_scroll_steppers": {"section": "main", "name": _("Show Scrollbars Buttons"), "type": "binary",
                                       "tooltip": _("Useful for un-responsive touchscreens"),
                                       "value": "False", "callback": screen.reload_panels}},
-            {"auto_open_extrude": {"section": "main", "name": _("Auto-open Extrude On Pause"), "type": "binary",
+            # Start FLSUN Changes
+            {"auto_open_extrude": {"section": "main", "name": _("Auto-open filament management during Pause"), "type": "binary",
+            					   "tooltip": _("Useful for M600 feature"),
                                    "value": "True", "callback": screen.reload_panels}},
+            # End FLSUN Change
             {"show_cursor": {"section": "main", "name": _("Show cursor"), "type": "binary",
                              "tooltip": _("For mouse control or to verify touchscreen accuracy"),
                              "value": "False", "callback": screen.update_cursor}},

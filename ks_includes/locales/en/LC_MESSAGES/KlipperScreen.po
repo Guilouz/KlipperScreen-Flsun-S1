@@ -13,6 +13,15 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 3.5\n"
 
+msgid "Purge More"
+msgstr ""
+
+msgid "Purge Distance (mm)"
+msgstr ""
+
+msgid "Purge Speed (mm/s)"
+msgstr ""
+
 msgid "Show cursor"
 msgstr ""
 
@@ -300,7 +309,10 @@ msgstr ""
 msgid "Auto-close notifications"
 msgstr ""
 
-msgid "Auto-open Extrude On Pause"
+msgid "Auto-open filament management during Pause"
+msgstr ""
+
+msgid "Useful for M600 feature"
 msgstr ""
 
 msgid "Auto-scroll"

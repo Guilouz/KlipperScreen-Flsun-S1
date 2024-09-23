@@ -789,7 +789,7 @@ class KlipperScreen(Gtk.Window):
     def state_paused(self):
         self.state_printing()
         if self._config.get_main_config().getboolean("auto_open_extrude", fallback=True):
-            self.show_panel("extrude")
+            self.show_panel("pause") # FLSUN Changes
 
     def state_printing(self):
         self.show_panel("job_status", remove_all=True)
