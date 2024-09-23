@@ -303,13 +303,13 @@ class Panel(ScreenPanel):
                 self._screen.show_popup_message("Macro _KS_UNLOAD_FILAMENT" + _("not found!\nPlease update your configuration files.")) # FLSUN Changes
             else:
                 self._screen._confirm_unload_action(None, _("TO PREVENT EXTRUDER CLOG, FOLLOW THESE STEPS:\n\n\n1. Unclip the PTFE tube and press the lower spring clip of the PTFE connector.\n\n2. Remove the PTFE tube from the connector.\n\n3. Cut the filament and press Unload button."), "printer.gcode.script",
-                                          {"script": f"_KS_UNLOAD_FILAMENT SPEED={self.speed * 60}"}) # FLSUN Changes
+                                          {"script": f"_KS_UNLOAD_FILAMENT"}) # FLSUN Changes
         if direction == "+":
             if not self.load_filament:
                 self._screen.show_popup_message("Macro _KS_LOAD_FILAMENT" + _("not found!\nPlease update your configuration files.")) # FLSUN Changes
             else:
                 self._screen._send_action(widget, "printer.gcode.script",
-                                          {"script": f"_KS_LOAD_FILAMENT SPEED={self.speed * 60}"}) # FLSUN Changes
+                                          {"script": f"_KS_LOAD_FILAMENT"}) # FLSUN Changes
 
     def enable_disable_fs(self, switch, gparams, name, x):
         if switch.get_active():
