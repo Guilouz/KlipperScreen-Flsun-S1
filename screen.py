@@ -102,12 +102,14 @@ class KlipperScreen(Gtk.Window):
         self.connect("key-press-event", self._key_press_event)
         self.connect("configure_event", self.update_size)
         display = Gdk.Display.get_default()
-        self.display_number = os.environ.get('DISPLAY') or ':0'
-        logging.debug(f"Display for xset: {self.display_number}")
+        #self.display_number = os.environ.get('DISPLAY') or ':0' # FLSUN Changes
+        #logging.debug(f"Display for xset: {self.display_number}") # FLSUN Changes
         monitor_amount = Gdk.Display.get_n_monitors(display)
-        for i in range(monitor_amount):
-            m = display.get_monitor(i)
-            logging.info(f"Screen {i}: {m.get_geometry().width}x{m.get_geometry().height}")
+        # Start FLSUN Changes
+        #for i in range(monitor_amount):
+            #m = display.get_monitor(i)
+            #logging.info(f"Screen {i}: {m.get_geometry().width}x{m.get_geometry().height}")
+        # End FLSUN Changes
         try:
             mon_n = int(args.monitor)
             if not (-1 < mon_n < monitor_amount):
@@ -689,7 +691,10 @@ class KlipperScreen(Gtk.Window):
         if self._config.get_main_config().get('screen_blanking') != "off":
             logging.debug("Screen wake up")
             if not self.wayland:
-                os.system(f"xset -display {self.display_number} dpms force on")
+                # Start FLSUN Changes
+                #os.system(f"xset -display {self.display_number} dpms force on")
+                os.system("xset -display :0 dpms force on")
+                # End FLSUN Changes
 
     def set_dpms(self, use_dpms):
         self.use_dpms = use_dpms
@@ -705,14 +710,20 @@ class KlipperScreen(Gtk.Window):
 
     def set_screenblanking_timeout(self, time):
         if not self.wayland:
-            os.system(f"xset -display {self.display_number} s off")
+            # Start FLSUN Changes
+            #os.system(f"xset -display {self.display_number} s off")
+            os.system("xset -display :0 s off")
+            # End FLSUN Changes
         self.use_dpms = self._config.get_main_config().getboolean("use_dpms", fallback=True)
 
         if time == "off":
             logging.debug(f"Screen blanking: {time}")
             self.blanking_time = 0
             if not self.wayland:
-                os.system(f"xset -display {self.display_number} +dpms")
+            	# Start FLSUN Changes
+                #os.system(f"xset -display {self.display_number} +dpms")
+                os.system("xset -display :0 dpms 0 0 0")
+                # End FLSUN Changes
             return
 
         self.blanking_time = abs(int(time))
@@ -728,13 +739,19 @@ class KlipperScreen(Gtk.Window):
             else:
                 logging.debug("Using DPMS")
                 if not self.wayland:
-                    os.system(f"xset -display {self.display_number} dpms 0 {self.blanking_time} 0")
+                    # Start FLSUN Changes
+                    #os.system(f"xset -display {self.display_number} dpms 0 {self.blanking_time} 0")
+                    os.system(f"xset -display :0 dpms 0 {self.blanking_time} 0")
+                    # End FLSUN Changes
                 GLib.timeout_add_seconds(1, self.check_dpms_state)
                 return
         # Without dpms just blank the screen
         logging.debug("Not using DPMS")
         if not self.wayland:
-            os.system(f"xset -display {self.display_number} dpms 0 0 0")
+            # Start FLSUN Changes
+            #os.system(f"xset -display {self.display_number} dpms 0 0 0")
+            os.system("xset -display :0 dpms 0 0 0")
+            # End FLSUN Changes
         self.reset_screensaver_timeout()
         return
 
