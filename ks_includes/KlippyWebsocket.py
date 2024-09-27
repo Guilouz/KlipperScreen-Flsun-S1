@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 import threading
-import json
+import orjson
 import logging
 
 import gi
@@ -71,7 +71,7 @@ class KlippyWebsocket(threading.Thread):
             on_open=self.on_open,
             header=self.header
         )
-        self._wst = threading.Thread(target=self.ws.run_forever, daemon=True)
+        self._wst = threading.Thread(target=self.ws.run_forever, kwargs={'skip_utf8_validation': True}, daemon=True)
         try:
             logging.debug("Starting websocket thread")
             self._wst.start()
@@ -90,7 +90,7 @@ class KlippyWebsocket(threading.Thread):
 
     def on_message(self, *args):
         message = args[1] if len(args) == 2 else args[0]
-        response = json.loads(message)
+        response = orjson.loads(message)
         if "id" in response and response['id'] in self.callback_table:
             args = (response,
                     self.callback_table[response['id']][1],
@@ -124,7 +124,7 @@ class KlippyWebsocket(threading.Thread):
             "params": params,
             "id": self._req_id
         }
-        self.ws.send(json.dumps(data))
+        self.ws.send(orjson.dumps(data))
         return True
 
     def on_open(self, *args):
