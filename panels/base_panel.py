@@ -216,7 +216,7 @@ class BasePanel(ScreenPanel):
             return self._gtk.Image("fan", img_size, img_size)
         # Start FLSUN Changes
         elif device.startswith("heater_generic drying_box"):
-            return self._gtk.Image("filament", img_size, img_size)
+            return self._gtk.Image("drying-box", img_size, img_size)
         # End FLSUN Changes
         elif device.startswith("heater_generic"):
             return self._gtk.Image("heater", img_size, img_size)

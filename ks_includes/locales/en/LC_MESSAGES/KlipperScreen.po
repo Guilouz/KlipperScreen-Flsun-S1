@@ -13,6 +13,12 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 3.5\n"
 
+msgid "Presets"
+msgstr ""
+
+msgid "Neopixels"
+msgstr ""
+
 msgid "Purge More"
 msgstr ""
 
