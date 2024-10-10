@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: KlipperScreen\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-05-07 07:02-0600\n"
-"PO-Revision-Date: 2024-10-06 23:47+0200\n"
+"PO-Revision-Date: 2024-10-10 22:59+0200\n"
 "Last-Translator: Cyril Guislain\n"
 "Language-Team: \n"
 "Language: fr_FR\n"
@@ -592,11 +592,6 @@ msgstr "Masquer"
 msgid "Hide sensors in Temp."
 msgstr "Masquer les capteurs dans Températures"
 
-msgid "Hide temp."
-msgstr ""
-"Masquer les\n"
-"températures"
-
 msgid "Home"
 msgstr "Home"
 
@@ -644,6 +639,9 @@ msgstr "Invalide"
 
 msgid "Invalid password"
 msgstr "Mot de passe incorrect"
+
+msgid "Invalid temperature"
+msgstr "Température incorrecte"
 
 msgid "Inversely affects the icon size"
 msgstr "Affecte également la taille des icônes"
@@ -834,9 +832,6 @@ msgstr "Uniquement pour le panneau Mouvements"
 #, python-format
 msgid "Outdated by %d"
 msgstr "Version dépassée de %d"
-
-msgid "PSK for"
-msgstr "Clé de sécurité pour"
 
 msgid "Package will be updated"
 msgid_plural "Packages will be updated"

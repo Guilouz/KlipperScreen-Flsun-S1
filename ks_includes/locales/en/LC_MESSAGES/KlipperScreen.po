@@ -563,9 +563,6 @@ msgstr ""
 msgid "Hide sensors in Temp."
 msgstr ""
 
-msgid "Hide temp."
-msgstr ""
-
 msgid "Home"
 msgstr ""
 
@@ -612,6 +609,9 @@ msgid "Invalid"
 msgstr ""
 
 msgid "Invalid password"
+msgstr ""
+
+msgid "Invalid temperature"
 msgstr ""
 
 msgid "Inversely affects the icon size"
@@ -800,9 +800,6 @@ msgstr ""
 
 #, python-format
 msgid "Outdated by %d"
-msgstr ""
-
-msgid "PSK for"
 msgstr ""
 
 msgid "Package will be updated"
