@@ -239,13 +239,13 @@ class Panel(ScreenPanel):
                                   {"script": KlippyGcodes.set_led_color(name, color_data)})
         # Start FLSUN Changes
         self._screen._send_action(None, "printer.gcode.script",
-                              {"script": f"SET_GCODE_VARIABLE MACRO=NEOPIXELS_SWITCH VARIABLE=neopixels_red VALUE={red_value}"})
+                              {"script": f"SET_GCODE_VARIABLE MACRO=CHAMBER_LED_SWITCH VARIABLE=neopixels_red VALUE={red_value}"})
         self._screen._send_action(None, "printer.gcode.script",
-                              {"script": f"SET_GCODE_VARIABLE MACRO=NEOPIXELS_SWITCH VARIABLE=neopixels_green VALUE={green_value}"})
+                              {"script": f"SET_GCODE_VARIABLE MACRO=CHAMBER_LED_SWITCH VARIABLE=neopixels_green VALUE={green_value}"})
         self._screen._send_action(None, "printer.gcode.script",
-                              {"script": f"SET_GCODE_VARIABLE MACRO=NEOPIXELS_SWITCH VARIABLE=neopixels_blue VALUE={blue_value}"})
+                              {"script": f"SET_GCODE_VARIABLE MACRO=CHAMBER_LED_SWITCH VARIABLE=neopixels_blue VALUE={blue_value}"})
         self._screen._send_action(None, "printer.gcode.script",
-                              {"script": f"SET_GCODE_VARIABLE MACRO=NEOPIXELS_SWITCH VARIABLE=neopixels_state VALUE=1"})
+                              {"script": f"SET_GCODE_VARIABLE MACRO=CHAMBER_LED_SWITCH VARIABLE=neopixels_state VALUE=1"})
         # End FLSUN Changes
 
     @staticmethod
