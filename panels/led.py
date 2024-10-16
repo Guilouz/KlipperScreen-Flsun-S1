@@ -186,6 +186,10 @@ class Panel(ScreenPanel):
     def on_draw(self, da, ctx, color=None):
         if color is None:
             color = self.color_data
+        # Start FLSUN Changes
+        if color == [1.0, 0.0, 0.0, 0.0]:
+            color = [1.0, 0, 0.27, 0]
+        # End FLSUN Changes
         ctx.set_source_rgb(*self.rgbw_to_rgb(color))
         # Set the size of the rectangle
         width = height = da.get_allocated_width() * .9
