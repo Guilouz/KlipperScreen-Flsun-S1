@@ -21,9 +21,6 @@ msgstr ""
 msgid "Presets"
 msgstr ""
 
-msgid "Neopixels"
-msgstr ""
-
 msgid "Purge More"
 msgstr ""
 
