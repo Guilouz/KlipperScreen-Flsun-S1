@@ -249,7 +249,7 @@ class Panel(ScreenPanel):
 
         self.main = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, vexpand=True)
         self.main.pack_start(sbox, False, False, 0)
-        self.main.pack_start(self._filter_expander, False, True, 0)
+        #self.main.pack_start(self._filter_expander, False, True, 0) # FLSUN Changes
         self.main.pack_start(self.scroll, True, True, 0)
 
         self.load_spools()
