@@ -6,7 +6,7 @@
    version="1.1"
    id="svg10"
    sodipodi:docname="console.svg"
-   inkscape:version="1.1 (c4e8f9ed74, 2021-05-24)"
+   inkscape:version="1.2.1 (9c6d41e4, 2022-07-14)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -37,18 +37,18 @@
      guidetolerance="10"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:window-width="1600"
-     inkscape:window-height="826"
+     inkscape:window-width="1656"
+     inkscape:window-height="1205"
      id="namedview12"
      showgrid="false"
      inkscape:pagecheckerboard="false"
      inkscape:zoom="5.4137931"
-     inkscape:cx="10.713376"
-     inkscape:cy="32.047771"
+     inkscape:cx="-21.980892"
+     inkscape:cy="32.601911"
      inkscape:window-x="0"
-     inkscape:window-y="0"
-     inkscape:window-maximized="1"
-     inkscape:current-layer="svg10"
+     inkscape:window-y="25"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="g866"
      inkscape:snap-bbox="true"
      inkscape:snap-bbox-edge-midpoints="true"
      inkscape:document-rotation="0"
@@ -59,7 +59,9 @@
      inkscape:snap-object-midpoints="true"
      inkscape:snap-center="true"
      inkscape:bbox-nodes="true"
-     inkscape:bbox-paths="true" />
+     inkscape:bbox-paths="true"
+     inkscape:showpageshadow="2"
+     inkscape:deskcolor="#bfbfbf" />
   <!-- Generator: Sketch 52.5 (67469) - http://www.bohemiancoding.com/sketch -->
   <title
      id="title2">folder</title>
@@ -67,12 +69,12 @@
      id="desc4">Created with Sketch.</desc>
   <g
      id="g866"
-     transform="matrix(0.1125,0,0,0.11221614,23.459315,25.512191)"
+     transform="matrix(0.12976962,0,0,0.12944219,22.490832,24.516263)"
      style="stroke-width:8.90012">
     <g
        id="g6"
        style="fill:#ffffff;stroke:#ffffff;stroke-width:8.90012"
-       transform="translate(-164.0828,-182.18471)">
+       transform="translate(-166.72122,-182.18471)">
       <g
          id="g4"
          style="stroke-width:8.90012">
@@ -106,7 +108,7 @@
          id="g16"
          style="stroke-width:8.90012">
         <polygon
-           points="172.64,224 102.24,294.24 123.36,315.36 214.56,224 123.36,132.64 102.24,153.76 "
+           points="214.56,224 123.36,132.64 102.24,153.76 172.64,224 102.24,294.24 123.36,315.36 "
            id="polygon14"
            style="stroke-width:8.90012" />
       </g>

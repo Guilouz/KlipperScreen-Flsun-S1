@@ -6,7 +6,7 @@
    version="1.1"
    id="svg10"
    sodipodi:docname="heat-up.svg"
-   inkscape:version="1.1 (c4e8f9ed74, 2021-05-24)"
+   inkscape:version="1.2.1 (9c6d41e4, 2022-07-14)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -37,21 +37,23 @@
      guidetolerance="10"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:window-width="1600"
-     inkscape:window-height="826"
+     inkscape:window-width="1463"
+     inkscape:window-height="1205"
      id="namedview12"
      showgrid="false"
      inkscape:pagecheckerboard="false"
      inkscape:zoom="3.8281298"
-     inkscape:cx="11.493863"
-     inkscape:cy="35.13465"
+     inkscape:cx="-42.187702"
+     inkscape:cy="35.395874"
      inkscape:window-x="0"
-     inkscape:window-y="0"
-     inkscape:window-maximized="1"
+     inkscape:window-y="25"
+     inkscape:window-maximized="0"
      inkscape:current-layer="svg10"
      inkscape:snap-bbox="true"
      inkscape:snap-bbox-edge-midpoints="true"
-     inkscape:document-rotation="0" />
+     inkscape:document-rotation="0"
+     inkscape:showpageshadow="2"
+     inkscape:deskcolor="#bfbfbf" />
   <!-- Generator: Sketch 52.5 (67469) - http://www.bohemiancoding.com/sketch -->
   <title
      id="title2">folder</title>
@@ -59,7 +61,7 @@
      id="desc4">Created with Sketch.</desc>
   <g
      id="g829"
-     transform="translate(0,1.831489)">
+     transform="matrix(1.1,0,0,1.1,-3.2001098,-1.1853621)">
     <path
        sodipodi:nodetypes="sssccccs"
        inkscape:connector-curvature="0"
