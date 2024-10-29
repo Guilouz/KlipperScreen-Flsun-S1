@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import logging
-import psutil
 import gi
 
 gi.require_version("Gtk", "3.0")
@@ -9,6 +8,13 @@ from jinja2 import Environment
 from datetime import datetime
 from math import log
 from ks_includes.screen_panel import ScreenPanel
+
+try:
+    import psutil
+    psutil_available = True
+except ImportError:
+    psutil_available = False
+    logging.debug("psutil is not installed. Unable to do battery check.")
 
 class BasePanel(ScreenPanel):
     def __init__(self, screen, title=None):
@@ -482,6 +488,8 @@ class BasePanel(ScreenPanel):
             return self.battery_icons['unknown']
 
     def battery_percentage(self):
+        if not psutil_available:
+            return False
         battery = psutil.sensors_battery()
         if battery and battery.percent:
             self.labels['battery_icon'].set_from_pixbuf(
