@@ -117,7 +117,12 @@ class Panel(MenuPanel):
             dev_type = "sensor"
         elif device.startswith("heater_generic drying_box"):
             self.h += 1
-            image = "filament"
+            image = "drying-box"
+            class_name = f"graph_label_sensor_{self.h}"
+            dev_type = "sensor"
+        elif device.startswith("temperature_sensor chamber"):
+            self.h += 1
+            image = "chamber"
             class_name = f"graph_label_sensor_{self.h}"
             dev_type = "sensor"
         # End FLSUN Changes

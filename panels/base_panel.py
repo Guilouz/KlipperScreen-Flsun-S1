@@ -178,7 +178,7 @@ class BasePanel(ScreenPanel):
                 self.labels[f'{device}_box'].pack_start(self.labels[device], False, False, 0)
 
             # Limit the number of items according to resolution
-            nlimit = int(round(log(self._screen.width, 10) * 5 - 10.5))
+            nlimit = int(round(log(self._screen.width, 10) * 6 - 10.5)) # FLSUN Changes
             n = 0
             if len(self._printer.get_tools()) > (nlimit - 1):
                 self.current_extruder = self._printer.get_stat("toolhead", "extruder")
@@ -195,6 +195,11 @@ class BasePanel(ScreenPanel):
                 elif device.startswith("heater"):
                     self.control['temp_box'].add(self.labels[f"{device}_box"])
                     n += 1
+                # Start FLSUN Changes
+                elif device.startswith("temperature_sensor chamber"):
+                    self.control['temp_box'].add(self.labels[f"{device}_box"])
+                    n += 1
+                # End FLSUN Changes
             for device in devices:
                 # Users can fill the bar if they want
                 if n >= nlimit + 1:
@@ -252,6 +257,8 @@ class BasePanel(ScreenPanel):
         # Start FLSUN Changes
         elif device.startswith("heater_generic drying_box"):
             return self._gtk.Image("drying-box", img_size, img_size)
+        elif device.startswith("temperature_sensor chamber"):
+            return self._gtk.Image("chamber", img_size, img_size)
         # End FLSUN Changes
         elif device.startswith("heater_generic"):
             return self._gtk.Image("heater", img_size, img_size)
