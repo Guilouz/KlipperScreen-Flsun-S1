@@ -18,6 +18,21 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
+msgid "Lock"
+msgstr ""
+
+msgid "Unlock"
+msgstr ""
+
+msgid "Unlock failed"
+msgstr ""
+
+msgid "Klipper will reboot to save configurations"
+msgstr ""
+
+msgid "Mesh Settings"
+msgstr ""
+
 msgid "Presets"
 msgstr ""
 
@@ -45,7 +60,7 @@ msgstr ""
 msgid "Do you want to start measuring resonances?"
 msgstr ""
 
-msgid "Do you want to start bed calibrations?\n\nA Delta Calibration and a Bed Leveling will be performed."
+msgid "Do you want to start bed calibrations?\n\nA Delta Calibration and a Bed Leveling will be performed.\n\nKlipper will restart after each action."
 msgstr ""
 
 msgid "Do you want to start Z Offset calibration?"
