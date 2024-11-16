@@ -12,6 +12,11 @@ class ScreenSaver:
         self.config = screen._config
         self.screensaver_timeout = None
         self.blackbox = None
+    
+    # Start FLSUN Changes
+    def is_showing(self):
+        return self.blackbox is not None
+    # End FLSUN Changes
 
     def reset_timeout(self, *args):
         if self.screensaver_timeout is not None:
