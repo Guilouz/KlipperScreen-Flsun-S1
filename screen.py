@@ -621,10 +621,8 @@ class KlipperScreen(Gtk.Window):
             self.set_dpms(False)
             return False
         elif state != functions.DPMS_State.On:
-            # Start FLSUN Changes
             if not self.screensaver.is_showing():
                 self.screensaver.show()
-            # End FLSUN Changes
         return True
 
     def wake_screen(self):
