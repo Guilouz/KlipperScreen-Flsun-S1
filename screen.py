@@ -77,6 +77,7 @@ class KlipperScreen(Gtk.Window):
     notification_log = []
     prompt = None
     tempstore_timeout = None
+    check_dpms_timeout = None
 
     def __init__(self, args):
         self.server_info = None
@@ -636,6 +637,9 @@ class KlipperScreen(Gtk.Window):
                 # End FLSUN Changes
 
     def set_dpms(self, use_dpms):
+        if not use_dpms:
+            GLib.source_remove(self.check_dpms_timeout)
+            self.check_dpms_timeout = None
         self.use_dpms = use_dpms
         logging.info(f"DPMS set to: {self.use_dpms}")
         if self.printer.state in ("printing", "paused"):
@@ -682,7 +686,8 @@ class KlipperScreen(Gtk.Window):
                     #os.system(f"xset -display {self.display_number} dpms 0 {self.blanking_time} 0")
                     os.system(f"xset -display :0 dpms 0 {self.blanking_time} 0")
                     # End FLSUN Changes
-                GLib.timeout_add_seconds(1, self.check_dpms_state)
+                if self.check_dpms_timeout is None:
+                    self.check_dpms_timeout = GLib.timeout_add_seconds(1, self.check_dpms_state)
                 return
         # Without dpms just blank the screen
         logging.debug("Not using DPMS")
