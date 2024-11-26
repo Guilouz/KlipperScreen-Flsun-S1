@@ -1,11 +1,11 @@
 #!/usr/bin/python
 
-import threading
 # Start FLSUN Changes
 #import json
 import orjson
 # End FLSUN Changes
 import logging
+import threading
 
 import gi
 import websocket
