@@ -200,7 +200,7 @@ class KlipperScreenConfig:
                 strs = ('gcode', '')
                 numbers = [f'{option}' for option in config[section] if option != 'gcode']
             elif section.startswith('menu '):
-                strs = ('name', 'icon', 'panel', 'method', 'params', 'enable', 'confirm', 'style', 'active')
+                strs = ('name', 'icon', 'panel', 'method', 'params', 'enable', 'confirm', 'style')
             elif section.startswith('graph')\
                     or section.startswith('displayed_macros')\
                     or section.startswith('spoolman'):
@@ -655,8 +655,7 @@ class KlipperScreenConfig:
             "confirm": cfg.get("confirm", None),
             "enable": cfg.get("enable", "True"),
             "params": cfg.get("params", "{}"),
-            "style": cfg.get("style", None),
-            "active": cfg.get("active", None)
+            "style": cfg.get("style", None)
         }
 
         return {name[(len(menu) + 6):]: item}
