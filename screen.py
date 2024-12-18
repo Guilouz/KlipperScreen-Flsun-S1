@@ -880,6 +880,15 @@ class KlipperScreen(Gtk.Window):
             #        "printer.gcode.script",
             #       script
             #    )
+            elif "SAVE_CONFIG" in data and self.printer.state == "ready":
+                script = {"script": "SAVE_CONFIG"}
+                self._info_action(
+                    None,
+                    _("Klipper will reboot to save configurations"),
+                    "printer.gcode.script",
+                   script
+                )
+                self._ws.klippy.gcode_script("SAVE_CONFIG")
             # End FLSUN Changes
         self.process_update(action, data)
 
@@ -970,6 +979,25 @@ class KlipperScreen(Gtk.Window):
             self.gtk.remove_dialog(self.confirm)
         self.confirm = self.gtk.Dialog(
             "KlipperScreen", buttons, vbox, self._confirm_send_action_response, method, params
+        )
+  
+    def _info_action(self, widget, text, method, params=None):
+        buttons = []
+
+        try:
+            j2_temp = self.env.from_string(text)
+            text = j2_temp.render()
+        except Exception as e:
+            logging.debug(f"Error parsing jinja for info_action\n{e}\n\n{traceback.format_exc()}")
+
+        label = Gtk.Label(hexpand=True, vexpand=True, halign=Gtk.Align.CENTER, valign=Gtk.Align.CENTER,
+                          wrap=True, wrap_mode=Pango.WrapMode.WORD_CHAR)
+        label.set_markup(text)
+
+        if self.confirm is not None:
+            self.gtk.remove_dialog(self.confirm)
+        self.confirm = self.gtk.Dialog(
+            "KlipperScreen", buttons, label, self._confirm_send_action_response, method, params
         )
     # End FLSUN Changes
 
