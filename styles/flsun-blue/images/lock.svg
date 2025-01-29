@@ -6,7 +6,7 @@
    version="1.1"
    id="svg10"
    sodipodi:docname="lock.svg"
-   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
+   inkscape:version="1.2.1 (9c6d41e4, 2022-07-14)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -37,17 +37,17 @@
      guidetolerance="10"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:window-width="1600"
-     inkscape:window-height="828"
+     inkscape:window-width="1463"
+     inkscape:window-height="1205"
      id="namedview12"
      showgrid="false"
      inkscape:pagecheckerboard="false"
      inkscape:zoom="10.827586"
-     inkscape:cx="26.229299"
-     inkscape:cy="44.423567"
+     inkscape:cx="7.2500001"
+     inkscape:cy="44.469746"
      inkscape:window-x="0"
-     inkscape:window-y="0"
-     inkscape:window-maximized="1"
+     inkscape:window-y="25"
+     inkscape:window-maximized="0"
      inkscape:current-layer="svg10"
      inkscape:snap-bbox="true"
      inkscape:snap-bbox-edge-midpoints="true"
@@ -60,22 +60,22 @@
   <desc
      id="desc4">Created with Sketch.</desc>
   <ellipse
-     style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:3.33333;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
      id="path5114"
-     cx="31.929701"
-     cy="41.06234"
-     rx="4.3648357"
-     ry="4.4511104" />
+     cx="31.921831"
+     cy="42.902599"
+     rx="4.8498173"
+     ry="4.9456782" />
   <rect
-     style="font-variation-settings:normal;opacity:1;vector-effect:none;fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1"
+     style="font-variation-settings:normal;opacity:1;vector-effect:none;fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:3.33333;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1"
      id="rect602"
-     width="32"
-     height="27"
-     x="16"
-     y="27.5" />
+     width="35.555557"
+     height="30"
+     x="14.222165"
+     y="27.833334" />
   <g
      id="g745"
-     transform="translate(0,1)">
+     transform="matrix(1.1111111,0,0,1.1111111,-3.5556122,-1.611111)">
     <path
        style="font-variation-settings:normal;opacity:1;vector-effect:none;fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:3;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1"
        id="path680"
