@@ -1,6 +1,7 @@
 import logging
 import subprocess
 import os
+
 import gi
 
 gi.require_version("Gtk", "3.0")
@@ -17,7 +18,7 @@ class Panel(ScreenPanel):
         self.max_brightness = 255
 
         brightness_path = "/sys/devices/platform/backlight/backlight/backlight/brightness"
-        brightness_backup_path = "/home/pi/flsun-os/brightness"
+        brightness_backup_path = "/home/pi/flsun-os/system/brightness"
         self.brightness_command = f"echo {{value}} >{brightness_path}"
         self.brightness_backup_command = f"echo {{value}} >{brightness_backup_path}"
         try:

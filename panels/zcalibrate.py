@@ -1,10 +1,10 @@
 import logging
+
 import gi
 
 gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk, Pango, GLib
 from ks_includes.screen_panel import ScreenPanel
-from ks_includes.KlippyGtk import find_widget
 from datetime import datetime
 
 
@@ -346,7 +346,7 @@ class Panel(ScreenPanel):
     def accept(self, widget):
         logging.info("Accepting Z position")
         self._screen._ws.klippy.gcode_script("ACCEPT")
-        self._screen._ws.klippy.gcode_script("G28") # FLSUN Changes
+        self._screen._ws.klippy.gcode_script("G28\nM400\nSAVE_CONFIG") # FLSUN Changes
 
     def buttons_calibrating(self):
         self.buttons['start'].get_style_context().remove_class('color3')
