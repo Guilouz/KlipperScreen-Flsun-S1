@@ -656,6 +656,10 @@ class KlipperScreen(Gtk.Window):
             if self.check_dpms_timeout is not None:
                 GLib.source_remove(self.check_dpms_timeout)
             self.check_dpms_timeout = None
+            # Start FLSUN Changes
+            #os.system(f"xset -display {self.display_number} -dpms")
+            os.system(f"xset -display :0 -dpms")
+            # End FLSUN Changes
         self.use_dpms = use_dpms
         self._config.set("main", "use_dpms", use_dpms)
         self._config.save_user_config_options()
@@ -669,17 +673,9 @@ class KlipperScreen(Gtk.Window):
         try:
             # Start FLSUN Change
             #subprocess.run(
-            #    f"xset -display {self.display_number} s off",
-            #    shell=True, check=True
-            #)
-            #subprocess.run(
             #    f"xset -display {self.display_number} dpms 0 {self.blanking_time} 0",
             #    shell=True, check=True
             #)
-            subprocess.run(
-                f"xset -display :0 s off",
-                shell=True, check=True
-            )
             subprocess.run(
                 f"xset -display :0 dpms 0 {self.blanking_time} 0",
                 shell=True, check=True
@@ -698,6 +694,13 @@ class KlipperScreen(Gtk.Window):
             self.set_screenblanking_timeout(time)
 
     def set_screenblanking_timeout(self, time):
+        # disable screensaver we have our own
+        # Start FLSUN Changes
+        #os.system(f"xset -display {self.display_number} s off")
+        #os.system(f"xset -display {self.display_number} s noblank")
+        os.system(f"xset -display :0 s off")
+        os.system(f"xset -display :0 s noblank")
+        # End FLSUN Changes
         if time == "off":
             self.blanking_time = 0
         else:
