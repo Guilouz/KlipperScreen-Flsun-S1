@@ -657,7 +657,9 @@ class KlipperScreen(Gtk.Window):
                 GLib.source_remove(self.check_dpms_timeout)
             self.check_dpms_timeout = None
             # Start FLSUN Changes
+            #os.system(f"xset -display {self.display_number} dpms 0 0 0")
             #os.system(f"xset -display {self.display_number} -dpms")
+            os.system(f"xset -display :0 dpms 0 0 0")
             os.system(f"xset -display :0 -dpms")
             # End FLSUN Changes
         self.use_dpms = use_dpms
