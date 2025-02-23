@@ -369,8 +369,7 @@ class Panel(ScreenPanel):
             'restart': self._gtk.Button("refresh", _("Reprint"), "color3"), # FLSUN Changes
             'resume': self._gtk.Button("resume", _("Resume"), "color1"),
             #'save_offset_probe': self._gtk.Button("home-z", _("Save Z") + "\n" + "Probe", "color1"), # FLSUN Changes
-            #'save_offset_endstop': self._gtk.Button("home-z", _("Save Z") + "\n" + "Endstop", "color2"), # FLSUN Changes
-            'wait': self._gtk.Button("info",_("Please wait..."), "color1"), # FLSUN Changes
+            'save_offset_endstop': self._gtk.Button("home-z", _("Save") + "\n" + _("Z Offset"), "color2"), # FLSUN Changes
         }
         self.buttons['cancel'].connect("clicked", self.cancel)
         self.buttons['control'].connect("clicked", self._screen._go_to_submenu, "")
@@ -381,41 +380,33 @@ class Panel(ScreenPanel):
         self.buttons['restart'].connect("clicked", self.restart)
         self.buttons['resume'].connect("clicked", self.resume)
         #self.buttons['save_offset_probe'].connect("clicked", self.save_offset, "probe") # FLSUN Changes
-        #self.buttons['save_offset_endstop'].connect("clicked", self.save_offset, "endstop") # FLSUN Changes
+        self.buttons['save_offset_endstop'].connect("clicked", self.save_offset, "endstop")
 
     # Start FLSUN Changes
-    #def save_offset(self, widget, device):
-        #sign = "+" if self.zoffset > 0 else "-"
-        #label = Gtk.Label(hexpand=True, vexpand=True, wrap=True)
-        #saved_z_offset = None
-        #msg = f"Apply {sign}{abs(self.zoffset)} offset to {device}?"
-        #if device == "probe":
-            #msg = _("Apply %s%.3f offset to Probe?") % (sign, abs(self.zoffset))
-            #if probe := self._printer.get_probe():
-                #saved_z_offset = probe['z_offset']
-        #elif device == "endstop":
-            #msg = _("Apply %s%.3f offset to Endstop?") % (sign, abs(self.zoffset))
-            #if 'stepper_z' in self._printer.get_config_section_list():
-                #saved_z_offset = self._printer.get_config_section('stepper_z')['position_endstop']
-            #elif 'stepper_a' in self._printer.get_config_section_list():
-                #saved_z_offset = self._printer.get_config_section('stepper_a')['position_endstop']
-            #if saved_z_offset:
-            #msg += "\n\n" + _("Saved offset: %s") % saved_z_offset
-        #label.set_label(msg)
-        #buttons = [
-            #{"name": _("Apply"), "response": Gtk.ResponseType.APPLY, "style": 'dialog-default'},
-            #{"name": _("Cancel"), "response": Gtk.ResponseType.CANCEL, "style": 'dialog-error'}
-        #]
-        #self._gtk.Dialog(_("Save Z"), buttons, label, self.save_confirm, device)
+    def save_offset(self, widget, device):
+        sign = "+" if self.zoffset > 0 else "-"
+        label = Gtk.Label(hexpand=True, vexpand=True, wrap=True)
+        saved_z_offset = None
+        msg = f"Apply {sign}{abs(self.zoffset)} offset to {device}?"
+        if device == "endstop":
+            msg = _("Apply %s%.3f offset to Endstop?") % (sign, abs(self.zoffset))
+            if 'stepper_a' in self._printer.get_config_section_list():
+                saved_z_offset = self._printer.get_config_section('stepper_a')['position_endstop']
+        if saved_z_offset:
+            msg += "\n\n" + _("Current position_endstop: %s") % saved_z_offset
+        label.set_label(msg)
+        buttons = [
+            {"name": _("Apply"), "response": Gtk.ResponseType.APPLY, "style": 'dialog-default'},
+            {"name": _("Cancel"), "response": Gtk.ResponseType.CANCEL, "style": 'dialog-error'}
+        ]
+        self._gtk.Dialog(_("Save"), buttons, label, self.save_confirm, device) # FLSUN Changes
 
-    #def save_confirm(self, dialog, response_id, device):
-        #self._gtk.remove_dialog(dialog)
-        #if response_id == Gtk.ResponseType.APPLY:
-            #if device == "probe":
-                #self._screen._ws.klippy.gcode_script("Z_OFFSET_APPLY_PROBE")
-            #if device == "endstop":
-                #self._screen._ws.klippy.gcode_script("Z_OFFSET_APPLY_ENDSTOP")
-            #self._screen._ws.klippy.gcode_script("SAVE_CONFIG")
+    def save_confirm(self, dialog, response_id, device):
+        self._gtk.remove_dialog(dialog)
+        if response_id == Gtk.ResponseType.APPLY:
+            if device == "endstop":
+                self._screen._ws.klippy.gcode_script("Z_OFFSET_APPLY_ENDSTOP")
+            self._screen._ws.klippy.gcode_script("SAVE_CONFIG")
     # End FLSUN Changes
 
     def restart(self, widget):
@@ -758,41 +749,28 @@ class Panel(ScreenPanel):
             self.can_close = False
         else:
             #Start FLSUN Changes
-            #offset = self._printer.get_stat("gcode_move", "homing_origin")
-            #self.zoffset = float(offset[2]) if offset else 0
-            #if self.zoffset != 0:
-                #if "Z_OFFSET_APPLY_ENDSTOP" in self._printer.available_commands:
-                    #self.buttons['button_grid'].attach(self.buttons["save_offset_endstop"], 0, 0, 1, 1)
-                #else:
-                    #self.buttons['button_grid'].attach(Gtk.Label(), 0, 0, 1, 1)
-                #if "Z_OFFSET_APPLY_PROBE" in self._printer.available_commands:
-                    #self.buttons['button_grid'].attach(self.buttons["save_offset_probe"], 1, 0, 1, 1)
-                #else:
-                    #self.buttons['button_grid'].attach(Gtk.Label(), 1, 0, 1, 1)
-            #else:
-                #self.buttons['button_grid'].attach(Gtk.Label(), 0, 0, 1, 1)
-                #self.buttons['button_grid'].attach(Gtk.Label(), 1, 0, 1, 1)
+            offset = self._printer.get_stat("gcode_move", "homing_origin")
+            self.zoffset = float(offset[2]) if offset else 0
+            if self.zoffset != 0:
+                if "Z_OFFSET_APPLY_ENDSTOP" in self._printer.available_commands:
+                    self.buttons['button_grid'].attach(Gtk.Label(), 0, 0, 1, 1)
+                    self.buttons['button_grid'].attach(self.buttons["save_offset_endstop"], 1, 0, 1, 1)
+                else:
+                    self.buttons['button_grid'].attach(Gtk.Label(), 0, 0, 1, 1)
+                    self.buttons['button_grid'].attach(Gtk.Label(), 1, 0, 1, 1)
+            else:
+                self.buttons['button_grid'].attach(Gtk.Label(), 0, 0, 1, 1)
+                self.buttons['button_grid'].attach(Gtk.Label(), 1, 0, 1, 1)
 
-            #if self.filename:
-                #self.buttons['button_grid'].attach(self.buttons['restart'], 2, 0, 1, 1)
-                #self.enable_button("restart")
-            #else:
-                #self.disable_button("restart")
-            #if self.state != "cancelling":
-                #self.buttons['button_grid'].attach(self.buttons['menu'], 3, 0, 1, 1)
-                #self.can_close = True
+            if self.filename:
+                self.buttons['button_grid'].attach(self.buttons['restart'], 2, 0, 1, 1)
+                self.enable_button("restart")
+            else:
+                self.disable_button("restart")
+            if self.state != "cancelling":
+                self.buttons['button_grid'].attach(self.buttons['menu'], 3, 0, 1, 1)
+                self.can_close = True
             # End FLSUN Changes
-            if self.state == "cancelling": # FLSUN Changes
-                self.buttons['button_grid'].attach(Gtk.Label(""), 0, 0, 1, 1) # FLSUN Changes
-                self.buttons['button_grid'].attach(Gtk.Label(""), 1, 0, 1, 1) # FLSUN Changes
-                self.buttons['button_grid'].attach(Gtk.Label(""), 2, 0, 1, 1) # FLSUN Changes
-                self.buttons['button_grid'].attach(self.buttons['wait'], 3, 0, 1, 1) # FLSUN Changes
-            if self.state != "cancelling": # FLSUN Changes
-                self.buttons['button_grid'].attach(Gtk.Label(""), 0, 0, 1, 1) # FLSUN Changes
-                self.buttons['button_grid'].attach(Gtk.Label(""), 1, 0, 1, 1) # FLSUN Changes
-                self.buttons['button_grid'].attach(self.buttons['restart'], 2, 0, 1, 1) # FLSUN Changes
-                self.buttons['button_grid'].attach(self.buttons['menu'], 3, 0, 1, 1) # FLSUN Changes
-                self.can_close = True # FLSUN Changes
         self.content.show_all()
 
     def show_file_thumbnail(self):

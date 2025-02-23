@@ -13,6 +13,12 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 3.5\n"
 
+msgid "Current position_endstop: %s"
+msgstr ""
+
+msgid "Z Offset"
+msgstr ""
+
 msgid "DPMS has failed and has been disabled"
 msgstr ""
 
