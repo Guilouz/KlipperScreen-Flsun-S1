@@ -20,7 +20,9 @@ This version of KlipperScreen is compatible with FLSUN S1, it's optimized for De
 - Automated with prompt macros
 - Some fixes and adjustments
 
-Repository for FLSUN S1 & T1 is available here: [Flsun-S1-T1](https://github.com/Guilouz/Flsun-S1-T1)
+Wiki is available here:
+
+<a href="https://guilouz.github.io/FLSUN-S1-Open-Source-Edition/home.html" target="_blank"><img width="350" src="https://github.com/Guilouz/FLSUN-S1-Open-Source-Edition/blob/main/docs/assets/images/open-source-edition.png?raw=true"></a>
 
 <br />
 
