@@ -1035,7 +1035,8 @@ class KlipperScreen(Gtk.Window):
     def _confirm_unload_action(self, widget, text, method, params=None):
         buttons = [
             {"name": _("Cancel"), "response": Gtk.ResponseType.CANCEL, "style": 'dialog-error'},
-            {"name": _("Unload"), "response": Gtk.ResponseType.OK, "style": 'dialog-info'}
+            {"name": _("Unload (Retract)"), "response": Gtk.ResponseType.APPLY, "style": 'dialog-info'},
+            {"name": _("Unload (Purge)"), "response": Gtk.ResponseType.OK, "style": 'dialog-info'}
         ]
 
         try:
@@ -1063,7 +1064,7 @@ class KlipperScreen(Gtk.Window):
         if self.confirm is not None:
             self.gtk.remove_dialog(self.confirm)
         self.confirm = self.gtk.Dialog(
-            "KlipperScreen", buttons, vbox, self._confirm_send_action_response, method, params
+            "KlipperScreen", buttons, vbox, self._confirm_unload_action_response, method, params
         )
   
     def _info_action(self, widget, text, method, params=None):
@@ -1084,6 +1085,16 @@ class KlipperScreen(Gtk.Window):
         self.confirm = self.gtk.Dialog(
             "KlipperScreen", buttons, label, self._confirm_send_action_response, method, params
         )
+
+    def _confirm_unload_action_response(self, dialog, response_id, method, params=None):
+        self.gtk.remove_dialog(dialog)
+        if response_id == Gtk.ResponseType.OK:
+            params = {"script": "_KS_UNLOAD_FILAMENT_PURGE"}
+        elif response_id == Gtk.ResponseType.APPLY:
+            params = {"script": "_KS_UNLOAD_FILAMENT_RETRACT"}
+        else:
+            return
+        self._send_action(None, method, params)
     # End FLSUN Changes
 
     def _confirm_send_action_response(self, dialog, response_id, method, params):

@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: KlipperScreen\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-05-07 07:02-0600\n"
-"PO-Revision-Date: 2025-02-23 21:51+0100\n"
+"PO-Revision-Date: 2025-03-01 22:31+0100\n"
 "Last-Translator: Cyril Guislain\n"
 "Language-Team: \n"
 "Language: fr_FR\n"
@@ -1118,6 +1118,12 @@ msgstr "Position de vis inconnue"
 
 msgid "Unload"
 msgstr "Décharger"
+
+msgid "Unload (Purge)"
+msgstr "Décharger (Purge)"
+
+msgid "Unload (Retract)"
+msgstr "Décharger (Retrait)"
 
 msgid "Unretract Extra Length"
 msgstr "Distance d'extrusion supplémentaire"

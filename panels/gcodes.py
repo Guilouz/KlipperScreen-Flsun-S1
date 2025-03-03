@@ -391,7 +391,7 @@ class Panel(ScreenPanel):
         # Start FLSUN Changes
         elif response_id == self.response_settings:
             if not self.bed_mesh:
-                self._screen.show_popup_message("Macro BED_MESH_SETTINGS" + _("not found!\nPlease update your configuration files."))
+                self._screen.show_popup_message("Macro BED_MESH_SETTINGS " + _("not found!\nPlease update your configuration files."))
             else:
                 self._screen._send_action(None, "printer.gcode.script",
                                           {"script": f"BED_MESH_SETTINGS"})

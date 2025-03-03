@@ -1083,6 +1083,12 @@ msgstr ""
 msgid "Unload"
 msgstr ""
 
+msgid "Unload (Purge)"
+msgstr ""
+
+msgid "Unload (Retract)"
+msgstr ""
+
 msgid "Unretract Extra Length"
 msgstr ""
 

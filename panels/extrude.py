@@ -18,8 +18,9 @@ class Panel(ScreenPanel):
         super().__init__(screen, title)
         self.current_extruder = self._printer.get_stat("toolhead", "extruder")
         macros = self._printer.get_config_section_list("gcode_macro ")
-        self.load_filament = any("_KS_LOAD_FILAMENT" in macro.upper() for macro in macros)
-        self.unload_filament = any("_KS_UNLOAD_FILAMENT" in macro.upper() for macro in macros)
+        self.load_filament = any("_KS_LOAD_FILAMENT" in macro.upper() for macro in macros) # FLSUN Changes
+        self.unload_filament_purge = any("_KS_UNLOAD_FILAMENT_PURGE" in macro.upper() for macro in macros) # FLSUN Changes
+        self.unload_filament_retract = any("_KS_UNLOAD_FILAMENT_RETRACT" in macro.upper() for macro in macros) # FLSUN Changes
 
         #self.speeds = ['1', '2', '5', '25'] # FLSUN Changes
         self.speeds = ['5', '10', '15', '20'] # FLSUN Changes
@@ -300,14 +301,15 @@ class Panel(ScreenPanel):
 
     def load_unload(self, widget, direction):
         if direction == "-":
-            if not self.unload_filament:
-                self._screen.show_popup_message("Macro _KS_UNLOAD_FILAMENT" + _("not found!\nPlease update your configuration files.")) # FLSUN Changes
+            if not self.unload_filament_purge:
+                self._screen.show_popup_message("Macro _KS_UNLOAD_FILAMENT_PURGE " + _("not found!\nPlease update your configuration files.")) # FLSUN Changes
+            elif not self.unload_filament_retract:
+                self._screen.show_popup_message("Macro _KS_UNLOAD_FILAMENT_RETRACT " + _("not found!\nPlease update your configuration files.")) # FLSUN Changes
             else:
-                self._screen._confirm_unload_action(None, _("TO PREVENT EXTRUDER CLOG, FOLLOW THESE STEPS:\n\n\n1. Unclip the PTFE tube and press the lower spring clip of the PTFE connector.\n\n2. Remove the PTFE tube from the connector.\n\n3. Cut the filament and press Unload button."), "printer.gcode.script",
-                                          {"script": f"_KS_UNLOAD_FILAMENT"}) # FLSUN Changes
+                self._screen._confirm_unload_action(None, _("TO PREVENT EXTRUDER CLOG, FOLLOW THESE STEPS:\n\n\n1. Unclip the PTFE tube and press the lower spring clip of the PTFE connector.\n\n2. Remove the PTFE tube from the connector.\n\n3. Cut the filament and press Unload button."), "printer.gcode.script", None) # FLSUN Changes
         if direction == "+":
             if not self.load_filament:
-                self._screen.show_popup_message("Macro _KS_LOAD_FILAMENT" + _("not found!\nPlease update your configuration files.")) # FLSUN Changes
+                self._screen.show_popup_message("Macro _KS_LOAD_FILAMENT " + _("not found!\nPlease update your configuration files.")) # FLSUN Changes
             else:
                 self._screen._send_action(widget, "printer.gcode.script",
                                           {"script": f"_KS_LOAD_FILAMENT"}) # FLSUN Changes

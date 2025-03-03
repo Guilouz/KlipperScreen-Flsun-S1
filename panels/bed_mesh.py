@@ -275,7 +275,7 @@ class Panel(ScreenPanel):
     # Start FLSUN Changes
     def mesh_settings(self, widget):
         if not self.bed_mesh:
-            self._screen.show_popup_message("Macro BED_MESH_SETTINGS" + _("not found!\nPlease update your configuration files."))
+            self._screen.show_popup_message("Macro BED_MESH_SETTINGS " + _("not found!\nPlease update your configuration files."))
         else:
             self._screen._send_action(widget, "printer.gcode.script",
                                           {"script": f"BED_MESH_SETTINGS"})
