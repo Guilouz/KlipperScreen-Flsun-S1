@@ -193,6 +193,10 @@ class Panel(ScreenPanel):
         name = self.current_led.split()[1] if len(self.current_led.split()) > 1 else self.current_led
         self._screen._send_action(None, "printer.gcode.script",
                                   {"script": KlippyGcodes.set_led_color(name, color_data)})
+        # Start FLSUN Changes
+        self._screen._send_action(None, "printer.gcode.script",
+                              {"script": f"SET_GCODE_VARIABLE MACRO=CHAMBER_LED_SWITCH VARIABLE=led_state VALUE=1"})
+        # End FLSUN Changes
 
     @staticmethod
     def parse_presets(presets_data) -> {}:
