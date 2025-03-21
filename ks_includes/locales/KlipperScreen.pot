@@ -45,6 +45,9 @@ msgstr ""
 msgid "Mesh Settings"
 msgstr ""
 
+msgid "Heating Settings"
+msgstr ""
+
 msgid "Presets"
 msgstr ""
 

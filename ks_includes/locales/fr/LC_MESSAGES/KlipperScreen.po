@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: KlipperScreen\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-05-07 07:02-0600\n"
-"PO-Revision-Date: 2025-03-01 22:31+0100\n"
+"PO-Revision-Date: 2025-03-21 00:57+0100\n"
 "Last-Translator: Cyril Guislain\n"
 "Language-Team: \n"
 "Language: fr_FR\n"
@@ -44,6 +44,9 @@ msgstr "Klipper va redémarrer pour sauvegarder les configurations"
 
 msgid "Mesh Settings"
 msgstr "Type de maillage"
+
+msgid "Heating Settings"
+msgstr "Type de chauffe"
 
 msgid "Presets"
 msgstr "Préréglages"
