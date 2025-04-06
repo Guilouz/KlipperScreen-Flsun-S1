@@ -31,6 +31,8 @@ class Panel(ScreenPanel):
                     self.z_delta = self.z_deltas[-1]
 
         zgrid = Gtk.Grid()
+        zgrid.set_margin_top(20) # FLSUN Changes
+        zgrid.set_margin_bottom(20) # FLSUN Changes
         for j, i in enumerate(self.z_deltas):
             self.labels[f"zdelta{i}"] = self._gtk.Button(label=i)
             self.labels[f"zdelta{i}"].connect("clicked", self.change_percent_delta, "z_offset", float(i))
@@ -41,6 +43,8 @@ class Panel(ScreenPanel):
             zgrid.attach(self.labels[f"zdelta{i}"], j, 0, 1, 1)
 
         spdgrid = Gtk.Grid()
+        spdgrid.set_margin_top(20) # FLSUN Changes
+        spdgrid.set_margin_bottom(20) # FLSUN Changes
         for j, i in enumerate(self.speed_deltas):
             self.labels[f"sdelta{i}"] = self._gtk.Button(label=f"{i}%")
             self.labels[f"sdelta{i}"].connect("clicked", self.change_percent_delta, "speed", int(i))
@@ -51,6 +55,8 @@ class Panel(ScreenPanel):
             spdgrid.attach(self.labels[f"sdelta{i}"], j, 0, 1, 1)
 
         extgrid = Gtk.Grid()
+        extgrid.set_margin_top(20) # FLSUN Changes
+        extgrid.set_margin_bottom(20) # FLSUN Changes
         for j, i in enumerate(self.extrude_deltas):
             self.labels[f"edelta{i}"] = self._gtk.Button(label=f"{i}%")
             self.labels[f"edelta{i}"].connect("clicked", self.change_percent_delta, "extrude", int(i))

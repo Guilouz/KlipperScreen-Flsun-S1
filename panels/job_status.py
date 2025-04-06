@@ -184,9 +184,9 @@ class Panel(ScreenPanel):
             if n >= nlimit:
                 break
             if dev == "heater_bed":
-                self.buttons['heater'][dev] = self._gtk.Button("bed", "", None, self.bts, Gtk.PositionType.LEFT, 1)
+                self.buttons['heater'][dev] = self._gtk.Button("bed-inner", "", None, self.bts, Gtk.PositionType.LEFT, 1) # FLSUN Changes
             else:
-                self.buttons['heater'][dev] = self._gtk.Button("heater", "", None, self.bts, Gtk.PositionType.LEFT, 1)
+                self.buttons['heater'][dev] = self._gtk.Button("bed-outer", "", None, self.bts, Gtk.PositionType.LEFT, 1) # FLSUN Changes
             self.labels[dev] = Gtk.Label(label="-")
 
             self.buttons['heater'][dev].set_label(self.labels[dev].get_text())
@@ -490,13 +490,22 @@ class Panel(ScreenPanel):
 
         for x in self._printer.get_temp_devices():
             if x in data:
+                # Start FLSUN Changes
+                #self.update_temp(
+                #    x,
+                #    self._printer.get_stat(x, "temperature"),
+                #    self._printer.get_stat(x, "target"),
+                #    self._printer.get_stat(x, "power"),
+                #    digits=0
+                #)
                 self.update_temp(
                     x,
                     self._printer.get_stat(x, "temperature"),
                     self._printer.get_stat(x, "target"),
-                    self._printer.get_stat(x, "power"),
+                    None,
                     digits=0
                 )
+                # End FLSUN Changes
                 if x in self.buttons['extruder']:
                     self.buttons['extruder'][x].set_label(self.labels[x].get_text())
                 elif x in self.buttons['heater']:
@@ -525,7 +534,7 @@ class Panel(ScreenPanel):
             if 'gcode_position' in data['gcode_move']:
                 self.pos_z = round(float(data['gcode_move']['gcode_position'][2]), 2)
                 self.buttons['z'].set_label(
-                    f"Z: {self.pos_z:6.2f}{f'/{self.oheight}' if self.oheight > 0 else ''} "
+                    f"Z: {self.pos_z:6.2f}{f' / {self.oheight}' if self.oheight > 0 else ''} " # FLSUN Changes
                     f"{f'{self.mm}' if self._screen.width > 500 else ''}"
                 )
             if 'extrude_factor' in data['gcode_move']:
@@ -538,7 +547,7 @@ class Panel(ScreenPanel):
             if 'speed' in data['gcode_move']:
                 self.req_speed = round(float(data["gcode_move"]["speed"]) / 60 * self.speed_factor)
                 self.labels['req_speed'].set_label(
-                    f"{self.speed}% {self.vel:3.0f}/{self.req_speed:3.0f} "
+                    f"{self.speed}% {self.vel:3.0f} / {self.req_speed:3.0f} " # FLSUN Changes
                     f"{f'{self.mms}' if self.vel < 1000 and self.req_speed < 1000 and self._screen.width > 500 else ''}"
                 )
                 self.buttons['speed'].set_label(self.labels['req_speed'].get_label())
@@ -561,7 +570,7 @@ class Panel(ScreenPanel):
             if 'live_velocity' in data['motion_report']:
                 self.vel = float(data["motion_report"]["live_velocity"])
                 self.labels['req_speed'].set_label(
-                    f"{self.speed}% {self.vel:3.0f}/{self.req_speed:3.0f} "
+                    f"{self.speed}% {self.vel:3.0f} / {self.req_speed:3.0f} " # FLSUN Changes
                     f"{f'{self.mms}' if self.vel < 1000 and self.req_speed < 1000 and self._screen.width > 500 else ''}"
                 )
                 self.buttons['speed'].set_label(self.labels['req_speed'].get_label())

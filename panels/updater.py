@@ -6,6 +6,7 @@ import gi
 gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk, Pango
 from ks_includes.screen_panel import ScreenPanel
+from ks_includes.KlippyGcodes import KlippyGcodes # FLSUN Changes
 
 
 class Panel(ScreenPanel):
@@ -17,7 +18,7 @@ class Panel(ScreenPanel):
 
         self.buttons = {
             "update_all": self._gtk.Button(
-                image_name="arrow-up",
+                image_name="arrow-down",
                 label=_("Full Update"),
                 style="color1",
                 scale=self.bts,
@@ -25,22 +26,39 @@ class Panel(ScreenPanel):
                 lines=1,
             ),
             "refresh": self._gtk.Button(
-                image_name="arrow-down",
+                image_name="refresh",
                 label=_("Refresh"),
                 style="color3",
                 scale=self.bts,
                 position=Gtk.PositionType.LEFT,
                 lines=1,
             ),
-        }
+            "update_config": self._gtk.Button(
+                image_name="files",
+                label=_("Update Klipper Configuration Files"),
+                style="color2",
+                scale=self.bts,
+                position=Gtk.PositionType.LEFT,
+                lines=1,
+            ),
+        } # FLSUN Changes
         self.buttons["update_all"].connect("clicked", self.show_update_info, "full")
         self.buttons["update_all"].set_vexpand(False)
         self.buttons["refresh"].connect("clicked", self.refresh_updates)
         self.buttons["refresh"].set_vexpand(False)
+        # Start FLSUN Changes
+        self.buttons["update_config"].connect("clicked", self.update_config)
+        macros = self._printer.get_config_section_list("gcode_macro ")
+        self.update_macro = any("UPDATE_CONFIGURATION_FILES" in macro.upper() for macro in macros)
+        self.buttons["refresh"].set_size_request(-1, 80)
+        self.buttons["update_all"].set_size_request(-1, 80)
+        self.buttons["update_config"].set_size_request(-1, 80)
+        # End FLSUN Changes
 
         top_box = Gtk.Box(vexpand=False)
-        top_box.pack_start(self.buttons["update_all"], True, True, 0)
         top_box.pack_start(self.buttons["refresh"], True, True, 0)
+        top_box.pack_start(self.buttons["update_all"], True, True, 0) # FLSUN Changes
+        top_box.pack_start(self.buttons["update_config"], True, True, 0) # FLSUN Changes
 
         self.update_msg = Gtk.Label(
             label=_("Checking for updates, please wait..."), vexpand=True
@@ -55,6 +73,14 @@ class Panel(ScreenPanel):
         self.main_box.pack_start(self.scroll, True, True, 0)
 
         self.content.add(self.main_box)
+
+    # Start FLSUN Changes
+    def update_config(self, button):
+        if not self.update_macro:
+            self._screen.show_popup_message("Macro UPDATE_CONFIGURATION_FILES " + _("not found!\nPlease update your configuration files."))
+        else:
+            self._screen._send_action(None, "printer.gcode.script", {"script": "UPDATE_CONFIGURATION_FILES"})
+    # End FLSUN Changes
 
     def activate(self):
         self._screen._ws.send_method("machine.update.status", callback=self.get_updates)

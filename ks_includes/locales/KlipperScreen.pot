@@ -18,6 +18,21 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
+msgid "System Info"
+msgstr ""
+
+msgid "Printer Setup Wizard"
+msgstr ""
+
+msgid "Update Klipper Configuration Files"
+msgstr ""
+
+msgid "About"
+msgstr ""
+
+msgid "Scan this QR Code to access the Wiki"
+msgstr ""
+
 msgid "Current position_endstop: %s"
 msgstr ""
 
@@ -79,15 +94,6 @@ msgid "Do you want to start bed calibrations?\n\nA Delta Calibration and a Bed L
 msgstr ""
 
 msgid "Do you want to start Z Offset calibration?"
-msgstr ""
-
-msgid "YOUR PRINTER DOES NOT SEEM TO BE CALIBRATED!"
-msgstr ""
-
-msgid "It's necessary to perform calibrations before starting a print."
-msgstr ""
-
-msgid "Go to Configurations → Calibrations menu to calibrate your printer."
 msgstr ""
 
 msgid "Please heat the nozzle."

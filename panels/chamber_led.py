@@ -123,10 +123,21 @@ class Panel(ScreenPanel):
             scale.set_has_origin(True)
             scale.get_style_context().add_class("fan_slider")
             scale.connect("button-release-event", self.apply_scales)
-            scale.connect("value_changed", self.update_preview_label)
+            # Start FLSUN Changes
+            #scale.connect("value_changed", self.update_preview_label)
+            box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
+            spacer = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
+            spacer.set_size_request(-1, 206)
+            label = Gtk.Label()
+            label.set_text(str(scale.get_value()))
+            scale.connect("value_changed", lambda scale, label=label: label.set_text(str(round(scale.get_value()))))
+            box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=5)
+            box.pack_start(spacer, False, False, 0)
+            box.pack_start(scale, False, False, 0)
+            # End FLSUN Changes
             self.scales[idx] = scale
             scale_grid.attach(button, 0, idx, 1, 1)
-            scale_grid.attach(scale, 1, idx, 3, 1)
+            scale_grid.attach(box, 1, idx, 3, 1) # FLSUN Changes
         grid.attach(scale_grid, 0, 0, 3, 1)
 
         columns = 3 if self._screen.vertical_mode else 2
