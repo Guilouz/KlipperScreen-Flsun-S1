@@ -173,9 +173,20 @@ class BasePanel(ScreenPanel):
             for device in devices:
                 self.labels[device] = Gtk.Label(ellipsize=Pango.EllipsizeMode.START)
                 self.labels[f'{device}_box'] = Gtk.Box()
-                icon = self.get_icon(device, img_size)
-                if icon is not None:
-                    self.labels[f'{device}_box'].pack_start(icon, False, False, 3)
+                # Start FLSUN Changes
+                #icon = self.get_icon(device, img_size)
+                #if icon is not None:
+                    #self.labels[f'{device}_box'].pack_start(icon, False, False, 3)
+                icon1 = self.get_icon(device, img_size, False)
+                icon2 = self.get_icon(device, img_size, True)
+                if icon1 and icon2:
+                    icon2.set_visible(False)
+                    self.labels[f'{device}_icons'] = [icon1, icon2]
+                if icon1 is not None:
+                    self.labels[f'{device}_box'].pack_start(icon1, False, False, 3)
+                if icon2 is not None:
+                    self.labels[f'{device}_box'].pack_start(icon2, False, False, 3)
+                # End FLSUN Changes
                 self.labels[f'{device}_box'].pack_start(self.labels[device], False, False, 0)
 
             # Limit the number of items according to resolution
@@ -235,19 +246,27 @@ class BasePanel(ScreenPanel):
         except Exception as e:
             logging.debug(f"Couldn't create heaters box: {e}")
 
-    def get_icon(self, device, img_size):
+    # Start FLSUN Changes
+    def get_icon(self, device, img_size, heating=False):
         if device.startswith("extruder"):
             if self._printer.extrudercount > 1:
                 if device == "extruder":
                     device = "extruder0"
                 return self._gtk.Image(f"extruder-{device[8:]}", img_size, img_size)
-            return self._gtk.Image("extruder", img_size, img_size)
+            if heating:
+                return self._gtk.Image("extruder-heating", img_size, img_size)
+            else:
+                return self._gtk.Image("extruder", img_size, img_size)
         elif device.startswith("heater_bed"):
-        # Start FLSUN Changes
-            #return self._gtk.Image("bed", img_size, img_size)
-            return self._gtk.Image("bed-inner", img_size, img_size)
+            if heating:
+                return self._gtk.Image("bed-inner-heating", img_size, img_size)
+            else:
+                return self._gtk.Image("bed-inner", img_size, img_size)
         elif device.startswith("heater_generic heater_bed_2"):
-            return self._gtk.Image("bed-outer", img_size, img_size)
+            if heating:
+                return self._gtk.Image("bed-outer-heating", img_size, img_size)
+            else:
+                return self._gtk.Image("bed-outer", img_size, img_size)
         # End FLSUN Changes
         # Extra items
         elif self.titlebar_name_type is not None:
@@ -257,7 +276,10 @@ class BasePanel(ScreenPanel):
             return self._gtk.Image("fan", img_size, img_size)
         # Start FLSUN Changes
         elif device.startswith("heater_generic drying_box"):
-            return self._gtk.Image("drying-box", img_size, img_size)
+            if heating:
+                return self._gtk.Image("drying-box-heating", img_size, img_size)
+            else:
+                return self._gtk.Image("drying-box", img_size, img_size)
         elif device.startswith("temperature_sensor chamber"):
             return self._gtk.Image("chamber", img_size, img_size)
         # End FLSUN Changes
@@ -362,6 +384,12 @@ class BasePanel(ScreenPanel):
             return
         for device in devices:
             temp = self._printer.get_stat(device, "temperature")
+            # Start FLSUN Changes
+            if self._printer.device_has_target(device):
+                target = self._printer.get_stat(device, "target")
+            else:
+                target=0
+            # End FLSUN Changes
             if temp and device in self.labels:
                 name = ""
                 if not (device.startswith("extruder") or device.startswith("heater_bed")):
@@ -371,8 +399,16 @@ class BasePanel(ScreenPanel):
                     elif self.titlebar_name_type == "short":
                         name = device.split()[1] if len(device.split()) > 1 else device
                         name = f"{name[:1].upper()}: "
-                # Start FSLUN Changes
+                # Start FLSUN Changes
                 #self.labels[device].set_label(f"{name}{temp:.0f}°")
+                icons = self.labels.get(f'{device}_icons')
+                if icons:
+                    if target > 0:
+                        icons[0].set_visible(False)
+                        icons[1].set_visible(True)
+                    else:
+                        icons[0].set_visible(True)
+                        icons[1].set_visible(False)
                 self.labels[device].set_label(f"{name}{temp:.0f}°C")
                 # End FLSUN Changes
 
