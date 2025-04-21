@@ -39,6 +39,14 @@ class BasePanel(ScreenPanel):
         self.control['home'].connect("clicked", self._screen._menu_go_back, True)
         for control in self.control:
             self.set_control_sensitive(False, control)
+        # Start FLSUN Changes
+        self.control['led'] = self._gtk.Button('light', scale=self.abscale)
+        self.control['led'].connect("clicked", self.toggle_led)
+        self.control['led'].set_no_show_all(True)
+        self.control['lock'] = self._gtk.Button("lock", scale=self.abscale)
+        self.control['lock'].connect("clicked", self._screen.lock_screen.lock)
+        self.control['lock'].set_no_show_all(True)
+        # End FLSUN Changes
         self.control['estop'] = self._gtk.Button('emergency', scale=self.abscale)
         self.control['estop'].connect("clicked", self.emergency_stop)
         self.control['estop'].set_no_show_all(True)
@@ -52,13 +60,15 @@ class BasePanel(ScreenPanel):
         self.control['printer_select'].connect("clicked", self._screen.show_printer_select)
         self.control['printer_select'].set_no_show_all(True)
 
-        self.shorcut = {
-            "panel": "gcode_macros",
-            "icon": "custom-script",
-        }
-        self.control['shortcut'] = self._gtk.Button(self.shorcut['icon'], scale=self.abscale)
-        self.control['shortcut'].connect("clicked", self.menu_item_clicked, self.shorcut)
-        self.control['shortcut'].set_no_show_all(True)
+        # Start FLUSUN Changes
+        #self.shorcut = {
+        #    "panel": "gcode_macros",
+        #    "icon": "custom-script",
+        #}
+        #self.control['shortcut'] = self._gtk.Button(self.shorcut['icon'], scale=self.abscale)
+        #self.control['shortcut'].connect("clicked", self.menu_item_clicked, self.shorcut)
+        #self.control['shortcut'].set_no_show_all(True)
+        # End FLUN Changes
 
         # Any action bar button should close the keyboard
         for item in self.control:
@@ -77,7 +87,9 @@ class BasePanel(ScreenPanel):
         self.action_bar.add(self.control['back'])
         self.action_bar.add(self.control['home'])
         self.action_bar.add(self.control['printer_select'])
-        self.action_bar.add(self.control['shortcut'])
+        #self.action_bar.add(self.control['shortcut']) # FLSUN Changes
+        self.action_bar.add(self.control['led']) # FLSUN Changes
+        self.action_bar.add(self.control['lock']) # FLSUN Changes
         self.action_bar.add(self.control['estop'])
         self.action_bar.add(self.control['shutdown'])
         self.show_printer_select(len(self._config.get_printers()) > 1)
@@ -291,6 +303,9 @@ class BasePanel(ScreenPanel):
     # Start FLSUN Changes
     def get_icon_by_name(self, icon_name, img_size):
         return self._gtk.Image(icon_name, img_size, img_size)
+
+    def toggle_led(self, button=None):
+        self._screen._send_action(None, "printer.gcode.script", {"script": "CHAMBER_LED_SWITCH"})
     # End FLSUN Changes
 
     def activate(self):
@@ -303,9 +318,11 @@ class BasePanel(ScreenPanel):
         printing = self._printer and self._printer.state in {"printing", "paused"}
         connected = self._printer and self._printer.state not in {'disconnected', 'startup', 'shutdown', 'error'}
         printer_select = 'printer_select' not in self._screen._cur_panels
+        self.control['led'].set_visible(connected and printer_select) # FLSUN Changes
+        self.control['lock'].set_visible(printing) # FLSUN Changes
         self.control['estop'].set_visible(printing)
         self.control['shutdown'].set_visible(not printing)
-        self.show_shortcut(connected and printer_select)
+        #self.show_shortcut(connected and printer_select) # FLSUN Changes
         self.show_heaters(connected and printer_select)
         self.show_printer_select(len(self._config.get_printers()) > 1)
         for control in ('back', 'home'):
