@@ -197,7 +197,9 @@ class Panel(ScreenPanel):
                 #self._screen._ws.send_method("machine.shutdown")
         if response_id == Gtk.ResponseType.APPLY:
             if method == "reboot":
+                self._screen._ws.send_method("machine.reboot")
                 os.system("systemctl reboot -i")
             else:
+                self._screen._ws.send_method("machine.shutdown")
                 os.system("systemctl poweroff -i")
         # End FLSUN Changes
