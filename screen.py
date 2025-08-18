@@ -110,9 +110,12 @@ class KlipperScreen(Gtk.Window):
         #logging.debug(f"Display for xset: {self.display_number}") # FLSUN Changes
         monitor_amount = Gdk.Display.get_n_monitors(display)
         # Start FLSUN Changes
-        #for i in range(monitor_amount):
-            #m = display.get_monitor(i)
-            #logging.info(f"Screen {i}: {m.get_geometry().width}x{m.get_geometry().height}")
+        #if (monitor_amount):
+            #for i in range(monitor_amount):
+                #m = display.get_monitor(i)
+                #logging.info(f"Screen {i}: {m.get_geometry().width}x{m.get_geometry().height}")
+        #else:
+            #logging.warning(f"WARNING: No monitors detected by Gdk")
         # End FLSUN Changes
         try:
             mon_n = int(args.monitor)
