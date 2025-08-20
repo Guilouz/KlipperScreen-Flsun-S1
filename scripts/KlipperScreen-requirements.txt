@@ -18,9 +18,3 @@ websocket-client>=1.8.0;python_version>"3.8"
 psutil>=6.0.0;python_version>"3.6"
 # PyGObject 3.51+ requires girepository 2.0 not available in bookworm (python 3.11)
 PyGObject<3.51;python_version>"3.8"
-
-# Start FLSUN Changes
-wsaccel==0.6.6;python_version>='3.9'
-wsaccel==0.6.4;python_version<='3.8'
-orjson==3.10.7
-# End FLSUN Changes
