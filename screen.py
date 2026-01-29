@@ -90,7 +90,6 @@ class KlipperScreen(Gtk.Window):
             raise RuntimeError from e
         GLib.set_prgname('KlipperScreen')
         self.blanking_time = 600
-        self.use_dpms = True
         self.apiclient = None
         self.dialogs = []
         self.confirm = None
@@ -180,7 +179,7 @@ class KlipperScreen(Gtk.Window):
             self.show_error_modal("Invalid config file", self._config.get_errors())
             return
         self.base_panel.activate()
-        self.use_dpms = self._config.get_main_config().getboolean("use_dpms", fallback=True)
+        self.use_dpms = self._config.get_main_config().getboolean("use_dpms", fallback=(not self.wayland))
         self.use_dpms &= functions.dpms_loaded
         self.set_dpms(self.use_dpms)
         #self.lock_screen = LockScreen(self) # FLSUN Changes
@@ -636,6 +635,8 @@ class KlipperScreen(Gtk.Window):
         return True
 
     def wake_screen(self):
+        if self.wayland:
+            return
         # Wake the screen (it will go to standby as configured)
         if not self.use_dpms:
             logging.debug("DPMS is disabled cannot wake the screen")
@@ -659,6 +660,12 @@ class KlipperScreen(Gtk.Window):
             return
 
     def set_dpms(self, use_dpms):
+        if self.wayland:
+            self.use_dpms = False
+            self._config.set("main", "use_dpms", False)
+            self._config.save_user_config_options()
+            logging.debug("DPMS handling not supported on Wayland")
+            return
         if not use_dpms:
             if self.check_dpms_timeout is not None:
                 GLib.source_remove(self.check_dpms_timeout)
@@ -715,12 +722,13 @@ class KlipperScreen(Gtk.Window):
 
     def set_screenblanking_timeout(self, time):
         # disable screensaver we have our own
-        # Start FLSUN Changes
-        #os.system(f"xset -display {self.display_number} s off")
-        #os.system(f"xset -display {self.display_number} s noblank")
-        os.system(f"xset -display :0 s off")
-        os.system(f"xset -display :0 s noblank")
-        # End FLSUN Changes
+        if not self.wayland:
+            # Start FLSUN Changes
+            #os.system(f"xset -display {self.display_number} s off")
+            #os.system(f"xset -display {self.display_number} s noblank")
+            os.system(f"xset -display :0 s off")
+            os.system(f"xset -display :0 s noblank")
+            # End FLSUN Changes
         if time == "off":
             self.blanking_time = 0
         else:
@@ -729,11 +737,11 @@ class KlipperScreen(Gtk.Window):
             except Exception as exc:
                 logging.exception(exc)
 
-        if self.use_dpms:
+        if self.use_dpms and not self.wayland:
             self.set_dpms_timeout()
         else:
             self.screensaver.reset_timeout()
-        logging.debug(f"Blanking timeout: {time} DPMS:{self.use_dpms}")
+        logging.debug(f"Blanking timeout: {time}")
 
     def show_printer_select(self, widget=None):
         self.base_panel.show_heaters(False)
